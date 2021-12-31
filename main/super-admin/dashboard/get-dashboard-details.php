@@ -60,7 +60,7 @@
         }
 
         session_start();
-        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "admin"){
+        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "super-admin"){
             echo getDashboardDetails();
         }else{
             echo "Access Denied!";

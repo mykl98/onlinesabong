@@ -29,7 +29,6 @@ var baseUrl = $("#base-url").text();
 var accountIdx;
 getAccountList();
 getUserDetails();
-getChurchList();
 
 function getUserDetails(){
     $.ajax({
@@ -93,7 +92,6 @@ function renderAccountList(data){
                                 <th>Name</th>\
                                 <th>Username</th>\
                                 <th>Access</th>\
-                                <th>Church</th>\
                                 <th style="max-width:50px;min-width:50px;">Action</th>\
                             </tr>\
                         </thead>\
@@ -103,7 +101,6 @@ function renderAccountList(data){
                         <td>'+list.name+'</td>\
                         <td>'+list.username+'</td>\
                         <td>'+list.access+'</td>\
-                        <td>'+list.church+'</td>\
                         <td>\
                             <button class="btn btn-success btn-sm" onclick="editAccount(\''+ list.idx +'\')"><i class="fa fa-pencil"></i></button>\
                             <button class="btn btn-danger btn-sm" onclick="deleteAccount(\''+ list.idx +'\')"><i class="fas fa-trash"></i></button>\
@@ -115,56 +112,10 @@ function renderAccountList(data){
     $("#account-table").DataTable();
 }
 
-function getChurchList(){
-    $.ajax({
-		type: "POST",
-		url: "get-church-list.php",
-		dataType: 'html',
-		data: {
-			dummy:"dummy"
-		},
-		success: function(response){
-			var resp = response.split("*_*");
-			if(resp[0] == "true"){
-				renderChurchList(resp[1]);
-			}else if(resp[0] == "false"){
-				alert(resp[1]);
-			} else{
-				alert(response);
-			}
-		}
-	});
-}
-
-function renderChurchList(data){
-    var lists = JSON.parse(data);
-    var markUp = '<div class="form-group" id="account-church-container">\
-                    <label for="account-church" class="col-form-label">Church:</label>\
-                    <select class="form-control" id="account-church">\
-                        <option value="">Select Church</option>';
-    lists.forEach(function(list){
-        markUp += '<option value="'+list.idx+'">'+list.name+'</option>';
-    })
-
-    markUp += '</select></div>';
-    $("#account-church-select-container").html(markUp);
-    $("#account-church-container").hide();
-}
-
-function accessChange(){
-    $access = $("#account-access").val();
-    if($access == "church"){
-        $("#account-church-container").show();
-    }else{
-        $("account-church").val("");
-        $("#account-church-container").hide();
-    }
-}
-
 function addAccount(){
     accountIdx = "";
+    $("#add-edit-account-modal-title").text("Add New Account");
     $("#add-edit-account-modal").modal("show");
-    accessChange();
 }
 
 function editAccount(idx){
@@ -197,9 +148,7 @@ function renderEditAccount(data){
         $("#account-access").val(list.access);
         $("#account-church").val(list.church);
         $("#add-edit-account-modal-title").text("Edit " + list.name + "'s Account Details");
-        accessChange();
     })
-    
     $("#add-edit-account-modal").modal("show");
 }
 
@@ -207,11 +156,6 @@ function saveAccount(){
     var name = $("#account-name").val();
     var username = $("#account-username").val();
     var access = $("#account-access").val();
-    var church = $("#account-church").val();
-
-    if(access == "admin"){
-        church = "";
-    }
 
     var error = "";
     if(name == "" || name == undefined){
@@ -220,8 +164,6 @@ function saveAccount(){
         error = "*Username field should not be empty.";
     }else if(access == "" || access == undefined){
         error = "*Please select access level.";
-    }else if(access == "church" && (church == "" || church == undefined)){
-        error = "*Please select church";
     }else{
         $.ajax({
             type: "POST",
@@ -231,8 +173,7 @@ function saveAccount(){
                 idx:accountIdx,
                 name:name,
                 username:username,
-                access:access,
-                church:church
+                access:access
             },
             success: function(response){
                 var resp = response.split("*_*");

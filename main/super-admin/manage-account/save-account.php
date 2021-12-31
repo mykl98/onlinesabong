@@ -10,31 +10,43 @@ if($_POST){
         }
     }
 
-    function saveAccount($idx,$name,$username,$access,$church){
+    function checkIfUsernameExist($username){
+        global $conn;
+        $table = "account";
+        $sql = "SELECT idx FROM `$table` WHERE username='$username'";
+        if($result=mysqli_query($conn,$sql)){
+            if(mysqli_num_rows($result) > 0){
+                return "true";
+            }else{
+                return "false";
+            }
+        }else{
+            return "false";
+        }
+    }
+
+    function saveAccount($idx,$name,$username,$access){
         global $conn;
         if(checkIfContainNumbers($name) == "true"){
             return "Invalid name, it contains numbers.";
         }
+        if(checkIfUsernameExist($username) == "true" && $idx == ""){
+            return "Username already exist, please use another username.";
+        }
         $table = "account";
         if($idx == ""){
-            if($access == "church"){
-                $sql = "INSERT INTO `$table` (name,username,password,access,churchidx) VALUES ('$name','$username','123456','$access','$church')";
-            }else{
-                $sql = "INSERT INTO `$table` (name,username,password,access) VALUES ('$name','$username','123456','$access')";
-            }
+            $sql = "INSERT INTO `$table` (name,username,password,access) VALUES ('$name','$username','123456','$access')";
             if(mysqli_query($conn,$sql)){
+                systemLog("Add new account with name: ".$name.",username: ".$username.",access: ".$access,$_SESSION["loginidx"]);
                 return "true*_*";
             }else{
                 return "System Failed!";
             }
         }else{
-            if($access == "church"){
-                $sql = "UPDATE `$table` SET name='$name',username='$username',access='$access',churchidx='$church' WHERE idx='$idx'";
-            }else{
-                $sql = "UPDATE `$table` SET name='$name',username='$username',access='$access',churchidx='$church' WHERE idx='$idx'";
-            }
+            $sql = "UPDATE `$table` SET name='$name',username='$username',access='$access' WHERE idx='$idx'";
             if(mysqli_query($conn,$sql)){
-                return "true*_*Successfully updated " . $name . "'s account in account list.";
+                systemLog("Edit account with name: ".$name.",username: ".$username.",access: ".$access,$_SESSION["loginidx"]);
+                return "true*_*";
             }else{
                 return "System Failed!";
             }
@@ -42,15 +54,14 @@ if($_POST){
     }
 
     session_start();
-    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "admin"){
+    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "super-admin"){
         $idx = sanitize($_POST["idx"]);
         $name = sanitize($_POST["name"]);
         $username = sanitize($_POST["username"]);
         $access = sanitize($_POST["access"]);
-        $church = sanitize($_POST["church"]);
 
         if(!empty($name) && !empty($username) && !empty($access)){
-            echo saveAccount($idx,$name,$username,$access,$church);
+            echo saveAccount($idx,$name,$username,$access);
         }else{
             echo "Network Error!";
         }

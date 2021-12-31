@@ -4,12 +4,20 @@ include_once "../system/backend/config.php";
     if($_SESSION["isLoggedIn"] == "true"){
         $access = $_SESSION["access"];
         switch($access){
+            case "super-admin":
+                header("location:super-admin/dashboard");
+                exit();
+                break;
             case "admin":
                 header("location:admin/dashboard");
                 exit();
                 break;
-            case "church":
-                header("location:church/dashboard");
+            case "teller":
+                header("location:teller/dashboard");
+                exit();
+                break;
+            case "operator":
+                header("location:operator/dashboard");
                 exit();
                 break;
             case "user":

@@ -3,7 +3,7 @@
     session_start();
     $idx = $_SESSION["loginidx"];
 
-    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "admin"){
+    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "super-admin"){
     
     }else{
         session_destroy();
@@ -17,7 +17,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Admin | Manage Account</title>
+    <title>Super Admin | Manage Account</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -69,7 +69,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link text-center pb-0">
-                <p id="global-department-name" class="">Admin</p>
+                <p id="global-department-name" class="">Super Admin</p>
             </a>
 
             <?php include "../side-nav-bar.html"?>
@@ -138,17 +138,18 @@
                     </div>
                     <div class="form-group">
                         <label for="account-access" class="col-form-label">Access:</label>
-                        <select class="form-control" id="account-access" onchange="accessChange()">
+                        <select class="form-control" id="account-access">
+                            <option value="super-admin">Super Admin</option>
                             <option value="admin">Admin</option>
-                            <option value="church">Church</option>
+                            <option value="teller">Teller</option>
+                            <option value="operator">Operator</option>
                         </select>
                     </div>
-                    <div id="account-church-select-container"></div>
                 </form>
                 <p id="add-edit-account-modal-error" class="text-danger font-italic small"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="clearAddEditAccountModal()">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" onclick="saveAccount()">Save</button>
             </div>
         </div>

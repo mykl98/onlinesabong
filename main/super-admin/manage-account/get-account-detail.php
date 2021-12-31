@@ -14,7 +14,6 @@
                     $value -> name = $row["name"];
                     $value -> username = $row["username"];
                     $value -> access = $row["access"];
-                    $value -> church = $row["churchidx"];
                     array_push($data,$value);
                 }
                 $data = json_encode($data);
@@ -25,7 +24,7 @@
         }
 
         session_start();
-        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "admin"){
+        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "super-admin"){
             $idx = sanitize($_POST["idx"]);
             echo getAccountDetail($idx);
         }else{

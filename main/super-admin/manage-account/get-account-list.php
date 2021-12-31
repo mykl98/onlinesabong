@@ -27,11 +27,9 @@
                         if($row["idx"] != 0){
                             $value = new \StdClass();
                             $value -> idx = $row["idx"];
-                            $value -> image = $row["image"];
                             $value -> name = $row["name"];
                             $value -> username = $row["username"];
                             $value -> access = $row["access"];
-                            $value -> church = getChurchName($row["churchidx"]);
                             array_push($data,$value);
                         }
                     }
@@ -44,7 +42,7 @@
         }
 
         session_start();
-        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "admin"){
+        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "super-admin"){
             echo getAccountList();
         }else{
             echo "Access Denied!";

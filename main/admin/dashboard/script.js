@@ -93,7 +93,7 @@ function renderUserDetails(data){
 function getLogs(){
     $.ajax({
 		type: "POST",
-		url: "get-electronic-log.php",
+		url: "get-log.php",
 		dataType: 'html',
 		data: {
 			dummy:"dummy"
@@ -116,21 +116,19 @@ function renderLogs(data){
     var markUp = '<table id="log-table" class="table table-striped table-bordered table-sm">\
                         <thead>\
                             <tr>\
-                                <th>Church</th>\
-                                <th>User</th>\
                                 <th>Date</th>\
                                 <th>Time</th>\
-                                <th>Activity</th>\
+                                <th>Log</th>\
+                                <th>Account</th>\
                             </tr>\
                         </thead>\
                         <tbody>';
     lists.forEach(function(list){
         markUp += '<tr>\
-                        <td>'+list.church+'</td>\
-                        <td>'+list.user+'</td>\
                         <td>'+list.date+'</td>\
                         <td>'+list.time+'</td>\
-                        <td>'+list.activity+'</td>\
+                        <td>'+list.log+'</td>\
+                        <td>'+list.account+'</td>\
                    </tr>';
     })
     markUp += '</tbody></table>';

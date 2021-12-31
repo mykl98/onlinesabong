@@ -35,7 +35,6 @@
                         $_SESSION["isLoggedIn"] = "true";
                         $_SESSION["loginidx"] = $row["idx"];
                         $_SESSION["access"] = $row["access"];
-                        $_SESSION["church"] = $row["churchidx"];
                         header("location:main");
                         exit();
                     }
@@ -70,7 +69,7 @@
     <link rel="stylesheet" href="system/plugin/fontawesome/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="system/plugin/fontawesome/css/fontawesome.css">
 
-    <title>Church Booking System</title>
+    <title>Online Betting System</title>
   </head>
 
   <body>
@@ -79,7 +78,7 @@
 
     <div class="container-fluid login-wrapper d-flex justify-content-center">
         <div class="login-box">
-            <h1 class="text-center text-wrap mt-3 mb-5">Integrated Online Scheduling System for Church Service with SMS Notification and QR Code Recognation</h1>    
+            <h1 class="text-center text-wrap mt-3 mb-5">Bacolod Cockfighting</br>Online Betting System</h1>    
             <div class="row d-flex justify-content-center">
                 <div class="col-sm-5 col-md-5 bg-white p-4 mb-5">
                     <h3 class="mb-2 text-success">Login</h3>

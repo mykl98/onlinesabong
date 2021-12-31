@@ -3,18 +3,18 @@ $whitelist = array('127.0.0.1', "::1");
 
 if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
     $servername = "localhost";
-	$username = "u528264240_cbs";
+	$username = "u528264240_onlinesabong";
 	$password = "Skooltech_113012";
-	$dbname = "u528264240_cbs";
+	$dbname = "u528264240_onlinesabong";
 	$conn = new mysqli($servername, $username, $password, $dbname);
-	$baseUrl = "https://raptorapps.xyz/cbs";
+	$baseUrl = "https://raptorapps.xyz/onlinesabong";
 }else{
 	$servername = "localhost";
 	$username = "root";
 	$password = "";
-	$dbname = "cbs";
+	$dbname = "onlinesabong";
 	$conn = new mysqli($servername, $username, $password, $dbname);
-	$baseUrl = "http://localhost/churchbookingsystem";
+	$baseUrl = "http://localhost/onlinesabong";
 }
 
 date_default_timezone_set("Asia/Manila");
@@ -32,6 +32,25 @@ function saveLog($log){
 	fclose($logFile);
 }
 
+function systemLog($log,$account){
+	global $conn;
+	$date = date("Y-m-d");
+	$time = date("h:m:ia");
+	$table = "log";
+	$sql = "INSERT INTO `$table` (date,time,log,account) VALUES ('$date','$time','$log','$account')";
+	if(mysqli_query($conn,$sql)){
+		$table = "super-log";
+		$sql = "INSERT INTO `$table` (date,time,log,account) VALUES ('$date','$time','$log','$account')";
+		if(mysqli_query($conn,$sql)){
+			return "true";
+		}else{
+			return "false" . $conn->error;
+		}
+	}else{
+		return "false" . $conn->error;
+	}
+}
+
 function generateCode($length){
 	$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 	$charactersLength = strlen($characters);
@@ -41,19 +60,3 @@ function generateCode($length){
 	}
 	return $randomString;
 }
-
-function generateOTP($length){
-	$characters = '0123456789';
-	$charactersLength = strlen($characters);
-	$randomString = '';
-	for ($i = 0; $i < $length; $i++) {
-		$randomString .= $characters[rand(0, $charactersLength - 1)];
-	}
-	return $randomString;
-}
-
-$shortCode = "23737526";
-$passPhrase = "slQ2p8hokq";
-$appId = "z5xjHEeRb8tBgin5BMcR6gtEa58oHGXX";
-$appSecret = "810df2bbe3d25bfe2e8dd9ef64d85798231b9134e92f252b974ed1bdc60242f1";
-?>

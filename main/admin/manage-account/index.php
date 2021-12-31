@@ -138,17 +138,16 @@
                     </div>
                     <div class="form-group">
                         <label for="account-access" class="col-form-label">Access:</label>
-                        <select class="form-control" id="account-access" onchange="accessChange()">
-                            <option value="admin">Admin</option>
-                            <option value="church">Church</option>
+                        <select class="form-control" id="account-access">
+                            <option value="teller">Teller</option>
+                            <option value="operator">Operator</option>
                         </select>
                     </div>
-                    <div id="account-church-select-container"></div>
                 </form>
                 <p id="add-edit-account-modal-error" class="text-danger font-italic small"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="clearAddEditAccountModal()">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" onclick="saveAccount()">Save</button>
             </div>
         </div>
