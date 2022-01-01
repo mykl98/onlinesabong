@@ -1,7 +1,7 @@
 <?php
     include_once "../../../system/backend/config.php";
     session_start();
-    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
+    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "teller"){
     
     }else{
         session_destroy();
@@ -15,7 +15,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Church | Dashboard</title>
+    <title>Teller | Dashboard</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -67,7 +67,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link text-center pb-0">
-                <p class="">Church</p>
+                <p class="">Teller</p>
             </a>
             <?php include "../side-nav-bar.html"?>
         </aside>
@@ -109,6 +109,19 @@
                         </div>
                         <div class="col-lg-3 col-6">
                             <!-- small box -->
+                            <div class="small-box bg-danger">
+                                <div class="inner">
+                                    <h3 id="dashboard-church">0</h3>
+                                    <p>Churches</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-church"></i>
+                                </div>
+                                <a href="../manage-church" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
                             <div class="small-box bg-warning">
                                 <div class="inner">
                                     <h3 id="dashboard-unprocessed">0</h3>
@@ -117,7 +130,7 @@
                                 <div class="icon">
                                     <i class="fas fa-list-alt"></i>
                                 </div>
-                                <a href="../church-booking" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                         <div class="col-lg-3 col-6">
@@ -130,21 +143,7 @@
                                 <div class="icon">
                                     <i class="fas fa-book"></i>
                                 </div>
-                                <a href="../church-booking" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Top 10 Current Log</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <div id="log-table-container"></div>
-                                    </div>
-                                </div>
+                                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>

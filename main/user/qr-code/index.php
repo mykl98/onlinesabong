@@ -99,7 +99,7 @@
                         <div class="card">
                             <div class="card-body text-center">
                                 <canvas id="qr-canvas-container"></canvas>
-                                <p class="text-wrap">This is for contact tracing that will also serve as your Personal QR Code upon entering the church.</p>
+                                <p class="text-wrap">This serve as your unique QR Code. Present this during cashin or cashout.</p>
                             </div>
                         </div>
                     </div>

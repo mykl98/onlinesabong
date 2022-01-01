@@ -1,7 +1,7 @@
 $(document).ready(function() {
     setTimeout(function(){
-        $("#dashboard-menu").attr("href","#");
-        $("#dashboard-menu").addClass("active");
+        $("#electronic-betting-menu").attr("href","#");
+        $("#electronic-betting-menu").addClass("active");
     },100)
 });
 
@@ -49,8 +49,7 @@ function getDashboardDetails(){
 function renderDashboardDetails(data){
     var lists = JSON.parse(data);
     lists.forEach(function(list){
-        $("#dashboard-approved").text(list.approved);
-        $("#dashboard-total").text(list.total);
+        $("#dashboard-wallet").text(list.wallet);
     })
 }
 

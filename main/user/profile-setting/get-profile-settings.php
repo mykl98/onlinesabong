@@ -13,8 +13,6 @@
                     $value = new \StdClass();
                     $value -> image = $row["image"];
                     $value -> name = $row["name"];
-                    $value -> number = $row["number"];
-                    $value -> address = $row["address"];
                     $value -> username = $row["username"];
 
                     array_push($data,$value);

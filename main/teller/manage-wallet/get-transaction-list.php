@@ -2,7 +2,7 @@
 if(isset($_POST)){
     include_once "../../../system/backend/config.php";
 
-    function getUserName($idx){
+    function getAccountName($idx){
         global $conn;
         $name = "";
         $table = "account";
@@ -16,20 +16,20 @@ if(isset($_POST)){
         return $name;
     }
 
-    function getLogList($church){
+    function getTransactionList($tellerIdx){
         global $conn;
         $data = array();
-        $table = "log";
-        $sql = "SELECT * FROM `$table` WHERE churchidx='$church' ORDER BY idx DESC";
+        $table = "transaction";
+        $sql = "SELECT * FROM `$table` WHERE telleridx='$tellerIdx' ORDER BY idx DESC";
         if($result=mysqli_query($conn, $sql)){
             if(mysqli_num_rows($result) > 0){
                 while($row=mysqli_fetch_array($result)){
                     $value = new \StdClass();
-                    $value -> idx = $row["idx"];
-                    $value -> user = getUserName($row["useridx"]);
                     $value -> date = $row["date"];
                     $value -> time = $row["time"];
-                    $value -> activity = $row["activity"];
+                    $value -> amount = $row["amount"];
+                    $value -> transaction = $row["transaction"];
+                    $value -> user = getAccountName($row["user"]);
                     array_push($data,$value);
                 }
             }
@@ -41,9 +41,9 @@ if(isset($_POST)){
     }
 
     session_start();
-    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
-        $church = $_SESSION["church"];
-        echo getLogList($church);
+    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "teller"){
+        $tellerIdx = $_SESSION["loginidx"];
+        echo getTransactionList($tellerIdx);
     }else{
         echo "Access Denied!";
     }

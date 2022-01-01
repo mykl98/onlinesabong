@@ -25,7 +25,7 @@
         }
 
         session_start();
-        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
+        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "teller"){
             $idx = $_SESSION["loginidx"];
             echo getProfileSettings($idx);
         }else{

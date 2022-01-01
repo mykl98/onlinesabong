@@ -3,8 +3,6 @@
     include_once "system/backend/config.php";
     $error = "";
     $name = "";
-    $address = "";
-    $number = "";
     $username = "";
     $password = "";
     $retype = "";
@@ -15,55 +13,6 @@
         }else{
             return "false";
         }
-    }
-
-    function checkIfContainUppercase($string){
-        if (strcspn($string, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') != strlen($string)){
-            return "true";
-        }else{
-            return "false";
-        }
-    }
-
-    function checkIfContainsSpecialChar($string){
-        if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $string)){
-            return "true";
-        }else{
-            return "false";
-        }
-    }
-
-    function sendMsg($number,$message){
-        global $conn,$shortCode,$passPhrase,$appId,$appSecret;
-        $url = "https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/".$shortCode."/requests?passphrase=".$passPhrase."&app_id=".$appId."&app_secret=".$appSecret;
-        $dataArray = [
-            'outboundSMSMessageRequest' => [
-                'clientCorrelator' => $number,
-                'outboundSMSTextMessage' => ['message' => rawurldecode(rawurldecode($message))],
-                'address' => $number
-            ]
-        ];
-        $json_data = json_encode($dataArray);
-
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $json_data);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($json_data))
-        );
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-        curl_close($curl);
-        if ($err) {
-            //echo "cURL Error #:" . $err;
-            return "false";
-        } else {
-            //saveLog($response);
-            return "true";
-        }
-        //return "true";
     }
 
     function checkUserName($username){
@@ -89,8 +38,6 @@
     }
     if($_POST){
         $name = sanitize($_POST["name"]);
-        $address = sanitize($_POST["address"]);
-        $number = sanitize($_POST["number"]);
         $username = sanitize($_POST["username"]);
         $password = sanitize($_POST["password"]);
         $retype = sanitize($_POST["retype"]);
@@ -99,20 +46,10 @@
             $error = "*Name field should not be empty!";
         }else if(checkIfContainNumbers($name) == "true"){
             $error = "Name should not contain numbers!";
-        }else if($address == ""){
-            $error = "*Address field should not be empty!";
-        }else if($number == "" || strlen($number) != 11){
-            $error = "*Invalid phone number!Please check.";
         }else if($username == ""){
             $error = "*Username field should not be empty!";
         }else if($password == ""){
             $error = "*Password field should not be empty!";
-        }else if(checkIfContainNumbers($password) == "false"){
-            $error = "*Password should contain numbers.";
-        }else if(checkIfContainUppercase($password) == "false"){
-            $error = "*Password should contain uppercase characters.";
-        }else if(checkIfContainsSpecialChar($password) == "false"){
-            $error = "*Password should contain special characters.";
         }else if(strlen($password) < 8){
             $error = "*Password should be atleast 8 characters long.";
         }else if($password != $retype){
@@ -121,15 +58,14 @@
             $error = $check;
         }else{
             $table = "account";
-            $otp = generateOTP(6);
             $qr = generateCode(100);
-            $sql = "INSERT INTO `$table` (name,address,username,password,number,access,qr,otp,status) VALUES ('$name','$address','$username','$password','$number','user','$qr','$otp','processing')";
+            $sql = "INSERT INTO `$table` (name,username,password,access,qr,wallet) VALUES ('$name','$username','$password','user','$qr','0')";
             if(mysqli_query($conn,$sql)){
                 $last_id = $conn->insert_id;
-                $_SESSION["lastidx"] = $last_id;
-                $message = $otp . " is your otp code from Church Booking System signup.";
-                sendMsg($number,$message);
-                header("location:otp.php");
+                $_SESSION["loginidx"] = $last_id;
+                $_SESSION["access"] = "user";
+                $_SESSION["isLoggedIn"] = "true";
+                header("location:main");
                 exit();
             }else{
                 $error = "*System Error!";
@@ -167,7 +103,7 @@
     <!--Login Wrapper-->
 
     <div class="container-fluid login-wrapper d-flex justify-content-center">
-        <div class="login-box">
+        <div class="login-box mt-5">
             <div class="row d-flex justify-content-center">
                 <div class="col-sm-5 col-md-5 bg-white p-4 mb-5">
                     <h3 class="mb-2 text-success">Signup</h3>
@@ -177,18 +113,6 @@
                                 <span class="input-group-text"><i class="fa fa-user"></i></span>
                             </div>
                             <input type="text" name="name" value="<?php echo $name;?>" class="form-control mt-0" placeholder="Your name">
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-home"></i></span>
-                            </div>
-                            <textarea name="address" class="form-control mt-0" placeholder="Address"><?php echo $address;?></textarea>
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-phone"></i></span>
-                            </div>
-                            <input type="number" name="number" value="<?php echo $number;?>" class="form-control mt-0" placeholder="Phone Number">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">

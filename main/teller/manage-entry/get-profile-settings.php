@@ -2,16 +2,18 @@
     if($_POST){
         include_once "../../../system/backend/config.php";
 
-        function getSetting($idx){
+        function getProfileSettings($idx){
             global $conn;
             $data = array();
-            $table = "church";
-            $sql = "SELECT description FROM `$table` WHERE idx='$idx'";
+            $table = "account";
+            $sql = "SELECT * FROM `$table` WHERE idx='$idx'";
             if($result=mysqli_query($conn,$sql)){
                 if(mysqli_num_rows($result) > 0){
                     $row = mysqli_fetch_array($result);
                     $value = new \StdClass();
-                    $value -> description = $row["description"];
+                    $value -> image = $row["image"];
+                    $value -> name = $row["name"];
+
                     array_push($data,$value);
                 }
                 $data = json_encode($data);
@@ -22,11 +24,11 @@
         }
 
         session_start();
-        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
-            $church = $_SESSION["church"];
-            echo getSetting($church);
+        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "operator"){
+            $idx = $_SESSION["loginidx"];
+            echo getProfileSettings($idx);
         }else{
-            echo "Access Denied";
+            echo "Access Denied!";
         }
     }else{
         echo "Access Denied!";

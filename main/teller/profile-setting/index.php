@@ -3,7 +3,7 @@
     session_start();
     $idx = $_SESSION["loginidx"];
 
-    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
+    if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "teller"){
     
     }else{
         session_destroy();
@@ -17,7 +17,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Church | Profile Settings</title>
+    <title>Teller | Profile Settings</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -51,7 +51,7 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <p id="global-user-name" class="mr-2 mt-2">Michael Martin G. Abellana</p>
-                    <p id="base-url" class="d-none"><?php echo $baseUrl;?></p>
+                    <p class="d-none" id="base-url"><?php echo $baseUrl;?></p>
                 </li>
                 <li class="nav-item">
                     <a class="" data-toggle="dropdown" href="#">
@@ -71,7 +71,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link text-center pb-0">
-                <p class="">Church</p>
+                <p id="global-department-name" class="">Teller</p>
             </a>
 
             <?php include "../side-nav-bar.html"?>

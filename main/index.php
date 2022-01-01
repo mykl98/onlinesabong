@@ -21,7 +21,7 @@ include_once "../system/backend/config.php";
                 exit();
                 break;
             case "user":
-                header("location:user/dashboard");
+                header("location:user/electronic-betting");
                 exit();
                 break;
             default:

@@ -1,8 +1,6 @@
 <?php
     include_once "../../../system/backend/config.php";
     session_start();
-    $idx = $_SESSION["loginidx"];
-
     if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "user"){
     
     }else{
@@ -17,7 +15,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>User | Church Bookings</title>
+    <title>User | Electronic Betting</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -71,44 +69,55 @@
             <a href="#" class="brand-link text-center pb-0">
                 <p class="">User</p>
             </a>
-
             <?php include "../side-nav-bar.html"?>
         </aside>
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Church Bookings</h1>
-                        </div><!-- /.col -->
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="<?php echo $baseUrl;?>">Home</a></li>
-                                <li class="breadcrumb-item active">Church Bookings</li>
-                            </ol>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
-            </div><!-- /.content-header -->
             <!-- Main content -->
             <section class="content">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Booking List</h3>
-                                <button class="btn btn-sm bg-success float-right" onclick="addBooking()"><span class="fa fa-plus"></span> Add Booking</button>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <div id="booking-table-container"></div>
-                                </div>
-                            </div>
+                <div class="container-fluid">
+                    <!-- Small boxes (Stat box) -->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <img src="<?php echo $baseUrl?>/system/images/sabong.jpg" class="w-100">
+                            <marquee id="scrolling-anouncement" class="bg-danger py-1 mt-1">Last Call for fight #888</marquee>
+                            <p id="announcement" class="p-2">Sample announcement here sample announcemnt here sample announcemnt here sample announcemnt here sample announcemnt here sample announcemnt here sample announcemnt here sample announcemnt here</p>
+                            <hr>
                         </div>
                     </div>
-                </div>
+                    <div class="row">
+                        <div class="col">
+                            <p class="pl-2 font-weight-bold mb-0">Wallet: <span id="wallet" class="text-success">1,000,000</span></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-6">
+                            <p class="pl-2 font-weight-bold">Fight# <span id="fight-number">88</span></p>
+                        </div>
+                        <div class="col-lg-3 col-6">
+                            <p class="pl-2 font-weight-bold text-right">Betting <span id="fight-status" class="badge badge-success">OPEN</span></p>
+                        </div>
+                    </div>
+                    <div class="row pb-5">
+                        <div class="col-lg-3 col-6">
+                            <button id="meron-button" class="btn btn-success w-100 p-3">MERON</button>
+                            <p class="pl-2 mt-3 font-weight-bold" id="meron-main-bet">1,000,000</p>
+                            <p class="pl-2 mt-4 mb-0">Bet</p>
+                            <p class="pl-2" id="meron-bet">100</p>
+                            <p class="pl-2 mt-4 mb-0">Payout</p>
+                            <p class="pl-2" id="meron-payout">100</p>
+                        </div>
+                        <div class="col-lg-3 col-6">
+                            <button id="wala-button" class="btn btn-danger w-100 p-3">WALA</button>
+                            <p class="mt-3 ml-2 font-weight-bold" id="wala-main-bet">1,000,000</p>
+                            <p class="pl-2 mt-4 mb-0">Bet</p>
+                            <p class="pl-2" id="wala-bet">100</p>
+                            <p class="pl-2 mt-4 mb-0">Payout</p>
+                            <p class="pl-2" id="wala-payout">100</p>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
             </section><!-- /.content -->
         </div><!-- /.content-wrapper -->
         <footer class="main-footer">
@@ -116,71 +125,7 @@
     </div>
     <!-- ./wrapper -->
 
-    <!-- Add Edit Booking Modal -->
-    <div class="modal fade" id="add-edit-booking-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="add-edit-booking-modal-title">Add New Booking</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <label for="booking-church" class="col-form-label">Church:</label>
-                        <div class="input-group">
-                            <input type="hidden" id="booking-churchidx">
-                            <input type="text" id="booking-church" class="form-control mt-0" readonly>
-                            <div class="input-group-append">
-                                <button type="button" class="input-group-text bg-success" onclick="loadChurchList()"><i class="fa fa-search"></i></button>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="booking-type" class="col-form-label">Type:</label>
-                            <select class="form-control" id="booking-type">
-                                <option value="Mass">Mass</option>
-                                <option value="Baptismal">Baptismal</option>
-                                <option value="Burial">Burial</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="booking-date" class="col-form-label">Date:</label>
-                            <input type="date" class="form-control" id="booking-date">
-                        </div>
-                        <div class="form-group">
-                            <label for="booking-time" class="col-form-label">Time:</label>
-                            <input type="time" class="form-control" id="booking-time">
-                        </div>
-                    </form>
-                    <p id="add-edit-booking-modal-error" class="text-danger font-italic small"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="saveBooking()">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Church Select Modal -->
-    <div class="modal fade" id="church-select-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Select Church</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div id="booking-church-table-container"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-<!-- Logout Modal -->
+    <!-- Logout Modal -->
     <div class="modal fade" id="logout-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">

@@ -2,47 +2,41 @@
     if($_POST){
         include_once "../../../system/backend/config.php";
 
-        function checkStatus($idx){
+        function getEntryStatus($idx){
             global $conn;
-            $table = "booking";
+            $status = "";
+            $table = "entry";
             $sql = "SELECT status FROM `$table` WHERE idx='$idx'";
             if($result=mysqli_query($conn,$sql)){
                 if(mysqli_num_rows($result) > 0){
                     $row = mysqli_fetch_array($result);
                     $status = $row["status"];
-                    if($status == "approved"){
-                        return "This booking is already approved. You could no longer delete this booking";
-                    }else{
-                        return "true";
-                    }
-                }else{
-                    return "System Error!";
                 }
-            }else{
-                return "System Error!";
             }
+            return $status;
         }
 
-        function deleteBooking($idx){
+        function deleteEntry($idx){
             global $conn;
-            $table = "booking";
-            $status = checkStatus($idx);
-            if($status == "true"){
+            $status = getEntryStatus($idx);
+            if($status == "cancelled" || $status == "finish"){
+                $table = "entry";
                 $sql = "DELETE FROM `$table` WHERE idx='$idx'";
                 if(mysqli_query($conn,$sql)){
+                    systemLog("Deleted the entry with index number ".$idx,$_SESSION["loginidx"]);
                     return "true*_*";
                 }else{
                     return "System Error!";
                 }
             }else{
-                return $status;
+                return "You are not allowed to delete this entry. This entry is already on " .$status. " state.";
             }
         }
 
         session_start();
-        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "user"){
+        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "operator"){
             $idx = sanitize($_POST["idx"]);
-            echo deleteBooking($idx);
+            echo deleteEntry($idx);
         }else{
             echo "Access Denied!";
         }

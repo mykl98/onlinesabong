@@ -1,6 +1,7 @@
 <?php
 $whitelist = array('127.0.0.1', "::1");
 
+/*
 if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
     $servername = "localhost";
 	$username = "u528264240_onlinesabong";
@@ -16,6 +17,15 @@ if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	$baseUrl = "http://localhost/onlinesabong";
 }
+*/
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "onlinesabong";
+$conn = new mysqli($servername, $username, $password, $dbname);
+//$baseUrl = "http://localhost/onlinesabong";
+$baseUrl = "http://192.168.1.5/onlinesabong";
 
 date_default_timezone_set("Asia/Manila");
 

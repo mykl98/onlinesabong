@@ -18,7 +18,7 @@ var baseUrl = $("#base-url").text();
 var userIdx;
 
 getUserDetails();
-getLogList();
+getTransactionList();
 
 function getUserDetails(){
     $.ajax({
@@ -53,10 +53,10 @@ function renderUserDetails(data){
 
 }
 
-function getLogList(){
+function getTransactionList(){
     $.ajax({
 		type: "POST",
-		url: "get-log-list.php",
+		url: "get-transaction-list.php",
 		dataType: 'html',
 		data: {
 			dummy:"dummy"
@@ -64,7 +64,7 @@ function getLogList(){
 		success: function(response){
 			var resp = response.split("*_*");
 			if(resp[0] == "true"){
-				renderLogList(resp[1]);
+				renderTransactionList(resp[1]);
 			}else if(resp[0] == "false"){
 				alert(resp[1]);
 			} else{
@@ -74,35 +74,37 @@ function getLogList(){
 	});
 }
 
-function renderLogList(data){
+function renderTransactionList(data){
     var lists = JSON.parse(data);
-    var markUp = '<table id="log-table" class="table table-striped table-bordered table-sm">\
+    var markUp = '<table id="transaction-table" class="table table-striped table-bordered table-sm">\
                         <thead>\
                             <tr>\
-                                <th>User</th>\
                                 <th>Date</th>\
                                 <th>Time</th>\
-                                <th>Activity</th>\
+                                <th>Amount</th>\
+                                <th>User</th>\
+                                <th>Transaction</th>\
                             </tr>\
                         </thead>\
                         <tbody>';
     lists.forEach(function(list){
-        var activity = list.activity;
-        if(activity == "login"){
-            activity = '<span class="badge badge-success">Login</span>';
-        }else if(activity == "logout"){
-            activity = '<span class="badge badge-danger">Logout</span>';
+        var transaction = list.transaction;
+        if(transaction == "cashin"){
+            transaction = '<span class="badge badge-success">Cash In</span>';
+        }else if(transaction == "cashout"){
+            transaction = '<span class="badge badge-danger">Cash Out</span>';
         }
         markUp += '<tr>\
-                        <td>'+list.user+'</td>\
                         <td>'+list.date+'</td>\
                         <td>'+list.time+'</td>\
-                        <td>'+activity+'</td>\
+                        <td>'+list.amount+'</td>\
+                        <td>'+list.user+'</td>\
+                        <td>'+transaction+'</td>\
                    </tr>';
     })
     markUp += '</tbody></table>';
-    $("#log-table-container").html(markUp);
-    $("#log-table").DataTable();
+    $("#transaction-table-container").html(markUp);
+    $("#transaction-table").DataTable();
 }
 
 function scanQr(){
@@ -162,15 +164,14 @@ function renderUserDetail(data){
     $("#qr-scan-modal").modal("show");
 }
 
-function qrLogin(){
-    var error = "";
+function processTransaction(){
     if(userIdx == ""){
         error = "*Unable to login, No scanned user detected.";
     }else{
-        if(confirm("Are your sure you want to logged in this user?")){
+        if(confirm("Are your sure you want to process this transaction?")){
             $.ajax({
                 type: "POST",
-                url: "user-login-logout.php",
+                url: "process-transaction.php",
                 dataType: 'html',
                 data: {
                     idx:userIdx,
@@ -190,58 +191,6 @@ function qrLogin(){
             });
         }
     }
-}
-
-function qrLogout(){
-    var error = "";
-    if(userIdx == ""){
-        error = "*Unable to logout, No scanned user detected.";
-    }else{
-        if(confirm("Are your sure you want to log out this user?")){
-            $.ajax({
-                type: "POST",
-                url: "user-login-logout.php",
-                dataType: 'html',
-                data: {
-                    idx:userIdx,
-                    activity:"logout"
-                },
-                success: function(response){
-                    var resp = response.split("*_*");
-                    if(resp[0] == "true"){
-                        $("#qr-scan-modal").modal("hide");
-                        getLogList();
-                    }else if(resp[0] == "false"){
-                        alert(resp[1]);
-                    } else{
-                        alert(response);
-                    }
-                }
-            });
-        }
-    }
-    $("#qr-scan-modal-error").text(error);
-}
-
-function logout(){
-    $.ajax({
-        type: "POST",
-        url: "logout.php",
-        dataType: 'html',
-        data: {
-            dummy:"dummy"
-        },
-        success: function(response){
-            var resp = response.split("*_*");
-            if(resp[0] == "true"){
-                window.open(baseUrl + "/index.php","_self")
-            }else if(resp[0] == "false"){
-                alert(resp[1]);
-            } else{
-                alert(response);
-            }
-        }
-    });
 }
 
 var prevDecodedText = "";
@@ -268,3 +217,24 @@ function onScanSuccess(decodedText, decodedResult) {
 var html5QrcodeScanner = new Html5QrcodeScanner(
     "qr-reader", { fps: 10, qrbox: 250 });
 html5QrcodeScanner.render(onScanSuccess);
+
+function logout(){
+    $.ajax({
+        type: "POST",
+        url: "logout.php",
+        dataType: 'html',
+        data: {
+            dummy:"dummy"
+        },
+        success: function(response){
+            var resp = response.split("*_*");
+            if(resp[0] == "true"){
+                window.open(baseUrl + "/index.php","_self")
+            }else if(resp[0] == "false"){
+                alert(resp[1]);
+            } else{
+                alert(response);
+            }
+        }
+    });
+}
