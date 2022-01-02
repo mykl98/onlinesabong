@@ -98,52 +98,39 @@
                             <!-- small box -->
                             <div class="small-box bg-success">
                                 <div class="inner">
-                                    <h3 id="dashboard-account">0</h3>
-                                    <p>Accounts</p>
+                                    <h3 id="dashboard-cashin">0</h3>
+                                    <p>Cash In</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-user"></i>
+                                    <i class="fas fa-download"></i>
                                 </div>
-                                <a href="../manage-account" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="../manage-wallet" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                         <div class="col-lg-3 col-6">
                             <!-- small box -->
                             <div class="small-box bg-danger">
                                 <div class="inner">
-                                    <h3 id="dashboard-church">0</h3>
-                                    <p>Churches</p>
+                                    <h3 id="dashboard-cashout">0</h3>
+                                    <p>Cash Out</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-church"></i>
+                                    <i class="fas fa-upload"></i>
                                 </div>
-                                <a href="../manage-church" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-6">
-                            <!-- small box -->
-                            <div class="small-box bg-warning">
-                                <div class="inner">
-                                    <h3 id="dashboard-unprocessed">0</h3>
-                                    <p>Unprocessed Bookings</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="fas fa-list-alt"></i>
-                                </div>
-                                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="../manage-wallet" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                         <div class="col-lg-3 col-6">
                             <!-- small box -->
                             <div class="small-box bg-info">
                                 <div class="inner">
-                                    <h3 id="dashboard-total">0</h3>
-                                    <p>Total Bookings</p>
+                                    <h3 id="dashboard-balance">0</h3>
+                                    <p>Balance</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-book"></i>
+                                    <i class="fas fa-list-alt"></i>
                                 </div>
-                                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="../manage-wallet" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>

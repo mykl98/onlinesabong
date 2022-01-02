@@ -2,29 +2,7 @@
     if($_POST){
         include_once "../../../system/backend/config.php";
 
-        function getBookingList($userIdx,$churchIdx){
-            global $conn;
-            $date = date("Y-m-d");
-            $data = array();
-            $table = "booking";
-            $sql = "SELECT * FROM `$table` WHERE date='$date' && useridx='$userIdx' && churchidx='$churchIdx' && status='approved'";
-            if($result=mysqli_query($conn,$sql)){
-                if(mysqli_num_rows($result) > 0){
-                    while($row=mysqli_fetch_array($result)){
-                        $value = new \StdClass();
-                        $value -> type = $row["type"];
-                        $value -> time = $row["time"];
-                        array_push($data,$value);
-                    }
-                }
-                $data = json_encode($data);
-                return $data;
-            }else{
-                return "System Error!";
-            }
-        }
-
-        function getUserDetail($qr,$church){
+        function getUserDetail($qr){
             global $conn;
             $data = array();
             $table = "account";
@@ -37,8 +15,7 @@
                             $value -> idx = $row["idx"];
                             $value -> image = $row["image"];
                             $value -> name = $row["name"];
-                            $value -> address = $row["address"];
-                            $value -> booking = getBookingList($row["idx"],$church);
+                            $value -> wallet = $row["wallet"];
                             array_push($data,$value);
                         }
                     }
@@ -51,10 +28,9 @@
         }
 
         session_start();
-        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "church"){
+        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "teller"){
             $qr = sanitize($_POST["qr"]);
-            $church = $_SESSION["church"];
-            echo getUserDetail($qr,$church);
+            echo getUserDetail($qr);
         }else{
             echo "Access Denied!";
         }

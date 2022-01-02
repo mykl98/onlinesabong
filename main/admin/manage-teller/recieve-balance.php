@@ -16,20 +16,28 @@ if(isset($_POST)){
         return $name;
     }
 
-    function getBalanceAmount($idx){
+    function getBalanceAmount($tellerIdx){
         global $conn;
-        $amount = 0;
-        $table = "account";
-        $sql = "SELECT cashin,cashout FROM `$table` WHERE idx='$idx'";
+        $totalAmount = 0;
+        $cashIn = 0;
+        $cashOut = 0;
+        $table = "transaction";
+        $sql = "SELECT amount,transaction FROM `$table` WHERE telleridx='$tellerIdx'";
         if($result=mysqli_query($conn,$sql)){
             if(mysqli_num_rows($result) > 0){
-                $row = mysqli_fetch_array($result);
-                $cashin = $row["cashin"];
-                $cashout = $row["cashout"];
-                $amount = (int)$cashin - (int)$cashout;
+                while($row=mysqli_fetch_array($result)){
+                    $transaction = $row["transaction"];
+                    $amount = $row["amount"];
+                    if($transaction == "cashin"){
+                        $cashIn += $amount;
+                    }else{
+                        $cashOut += $amount;
+                    }
+                }
+                $totalAmount = $cashIn - $cashOut;
             }
         }
-        return $amount;
+        return $totalAmount;
     }
 
     function recieveBalance($idx,$balance){
@@ -41,8 +49,8 @@ if(isset($_POST)){
         if(empty($amount)){
             return "This teller has no balance to clear out. Blance clear out failed.";
         }
-        $table = "account";
-        $sql = "UPDATE `$table` SET cashin='0',cashout='0' WHERE idx='$idx'";
+        $table = "transaction";
+        $sql = "DELETE FROM `$table` WHERE telleridx='$idx'";
         if(mysqli_query($conn,$sql)){
             systemLog("Colleted " .$amount." pesos from teller ".getAccountName($idx),$_SESSION["loginidx"]);
             return "true*_*";

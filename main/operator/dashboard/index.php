@@ -98,37 +98,37 @@
                             <!-- small box -->
                             <div class="small-box bg-success">
                                 <div class="inner">
-                                    <h3 id="dashboard-account">0</h3>
-                                    <p>Accounts</p>
+                                    <h3 id="dashboard-waiting">0</h3>
+                                    <p>Waiting</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-user"></i>
+                                    <i class="fas fa-wheelchair"></i>
                                 </div>
-                                <a href="../manage-account" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                         <div class="col-lg-3 col-6">
                             <!-- small box -->
                             <div class="small-box bg-danger">
                                 <div class="inner">
-                                    <h3 id="dashboard-church">0</h3>
-                                    <p>Churches</p>
+                                    <h3 id="dashboard-finish">0</h3>
+                                    <p>Finish</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-church"></i>
+                                    <i class="fas fa-flag-checkered"></i>
                                 </div>
-                                <a href="../manage-church" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                         <div class="col-lg-3 col-6">
                             <!-- small box -->
                             <div class="small-box bg-warning">
                                 <div class="inner">
-                                    <h3 id="dashboard-unprocessed">0</h3>
-                                    <p>Unprocessed Bookings</p>
+                                    <h3 id="dashboard-cancelled">0</h3>
+                                    <p>Cancelled</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-list-alt"></i>
+                                    <i class="fas fa-times-circle"></i>
                                 </div>
                                 <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
@@ -138,10 +138,10 @@
                             <div class="small-box bg-info">
                                 <div class="inner">
                                     <h3 id="dashboard-total">0</h3>
-                                    <p>Total Bookings</p>
+                                    <p>Total</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-book"></i>
+                                    <i class="fas fa-list"></i>
                                 </div>
                                 <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>

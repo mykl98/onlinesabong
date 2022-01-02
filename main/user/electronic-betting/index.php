@@ -81,40 +81,39 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <img src="<?php echo $baseUrl?>/system/images/sabong.jpg" class="w-100">
-                            <marquee id="scrolling-anouncement" class="bg-danger py-1 mt-1">Last Call for fight #888</marquee>
                             <p id="announcement" class="p-2">Sample announcement here sample announcemnt here sample announcemnt here sample announcemnt here sample announcemnt here sample announcemnt here sample announcemnt here sample announcemnt here</p>
                             <hr>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <p class="pl-2 font-weight-bold mb-0">Wallet: <span id="wallet" class="text-success">1,000,000</span></p>
+                            <p class="pl-2 font-weight-bold mb-0">Wallet: <span id="wallet" class="text-success">0</span></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-3 col-6">
-                            <p class="pl-2 font-weight-bold">Fight# <span id="fight-number">88</span></p>
+                            <p class="pl-2 font-weight-bold">Fight# <span id="fight-number">0</span></p>
                         </div>
                         <div class="col-lg-3 col-6">
-                            <p class="pl-2 font-weight-bold text-right">Betting <span id="fight-status" class="badge badge-success">OPEN</span></p>
+                            <div id="fight-status-container"></div>
                         </div>
                     </div>
                     <div class="row pb-5">
                         <div class="col-lg-3 col-6">
-                            <button id="meron-button" class="btn btn-success w-100 p-3">MERON</button>
-                            <p class="pl-2 mt-3 font-weight-bold" id="meron-main-bet">1,000,000</p>
+                            <button id="meron-button" class="btn btn-success w-100 p-3" onclick="addBetMeron()" disabled="true">MERON</button>
+                            <p class="pl-2 mt-3 font-weight-bold" id="meron-main-bet">0</p>
                             <p class="pl-2 mt-4 mb-0">Bet</p>
-                            <p class="pl-2" id="meron-bet">100</p>
+                            <p class="pl-2" id="meron-bet">0</p>
                             <p class="pl-2 mt-4 mb-0">Payout</p>
-                            <p class="pl-2" id="meron-payout">100</p>
+                            <p class="pl-2" id="meron-payout">0</p>
                         </div>
                         <div class="col-lg-3 col-6">
-                            <button id="wala-button" class="btn btn-danger w-100 p-3">WALA</button>
-                            <p class="mt-3 ml-2 font-weight-bold" id="wala-main-bet">1,000,000</p>
+                            <button id="wala-button" class="btn btn-danger w-100 p-3" onclick="addBetWala()" disabled="true">WALA</button>
+                            <p class="mt-3 ml-2 font-weight-bold" id="wala-main-bet">0</p>
                             <p class="pl-2 mt-4 mb-0">Bet</p>
-                            <p class="pl-2" id="wala-bet">100</p>
+                            <p class="pl-2" id="wala-bet">0</p>
                             <p class="pl-2 mt-4 mb-0">Payout</p>
-                            <p class="pl-2" id="wala-payout">100</p>
+                            <p class="pl-2" id="wala-payout">0</p>
                         </div>
                     </div>
                 </div><!-- /.container-fluid -->
@@ -124,7 +123,33 @@
         </footer>
     </div>
     <!-- ./wrapper -->
-
+    
+    <!-- Modals -->
+<div class="modal fade" id="add-bet-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="add-bet-modal-title">Add Bet to Meron</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="bet-amount" class="col-form-label">Amount:</label>
+                        <input type="number" class="form-control" id="bet-amount">
+                    </div>
+                </form>
+                <p id="add-bet-modal-error" class="text-danger font-italic small"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="confirmBet()">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
     <!-- Logout Modal -->
     <div class="modal fade" id="logout-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">

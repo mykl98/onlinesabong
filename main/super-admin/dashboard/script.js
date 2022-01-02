@@ -24,38 +24,6 @@ $(document).on('collapsed.lte.pushmenu', function(){
 var baseUrl = $("#base-url").text();
 getUserDetails();
 getDashboardDetails();
-getLogs();
-
-function getDashboardDetails(){
-    $.ajax({
-        type: "POST",
-        url: "get-dashboard-details.php",
-        dataType: 'html',
-        data: {
-            dummy:"dummy"
-        },
-        success: function(response){
-            var resp = response.split("*_*");
-            if(resp[0] == "true"){
-                renderDashboardDetails(resp[1]);
-            }else if(resp[0] == "false"){
-                alert(resp[1]);
-            } else{
-                alert(response);
-            }
-        }
-    });
-}
-
-function renderDashboardDetails(data){
-    var lists = JSON.parse(data);
-    lists.forEach(function(list){
-        $("#dashboard-account").text(list.account);
-        $("#dashboard-church").text(list.church);
-        $("#dashboard-unprocessed").text(list.unprocessed);
-        $("#dashboard-total").text(list.total);
-    })
-}
 
 function getUserDetails(){
     $.ajax({
@@ -90,50 +58,40 @@ function renderUserDetails(data){
 
 }
 
-function getLogs(){
+function getDashboardDetails(){
     $.ajax({
-		type: "POST",
-		url: "get-log.php",
-		dataType: 'html',
-		data: {
-			dummy:"dummy"
-		},
-		success: function(response){
-			var resp = response.split("*_*");
-			if(resp[0] == "true"){
-				renderLogs(resp[1]);
-			}else if(resp[0] == "false"){
-				alert(resp[1]);
-			} else{
-				alert(response);
-			}
-		}
-	});
+        type: "POST",
+        url: "get-dashboard-details.php",
+        dataType: 'html',
+        data: {
+            dummy:"dummy"
+        },
+        success: function(response){
+            var resp = response.split("*_*");
+            if(resp[0] == "true"){
+                renderDashboardDetails(resp[1]);
+            }else if(resp[0] == "false"){
+                alert(resp[1]);
+            } else{
+                alert(response);
+            }
+        }
+    });
 }
 
-function renderLogs(data){
+function renderDashboardDetails(data){
     var lists = JSON.parse(data);
-    var markUp = '<table id="log-table" class="table table-striped table-bordered table-sm">\
-                        <thead>\
-                            <tr>\
-                                <th>Date</th>\
-                                <th>Time</th>\
-                                <th>Log</th>\
-                                <th>Account</th>\
-                            </tr>\
-                        </thead>\
-                        <tbody>';
     lists.forEach(function(list){
-        markUp += '<tr>\
-                        <td>'+list.date+'</td>\
-                        <td>'+list.time+'</td>\
-                        <td>'+list.log+'</td>\
-                        <td>'+list.account+'</td>\
-                   </tr>';
+        $("#dashboard-waiting").text(list.waiting);
+        $("#dashboard-finish").text(list.finish);
+        $("#dashboard-cancelled").text(list.cancelled);
+        $("#dashboard-total").text(list.total);
+
+        var income = list.income;
+        var share = income * 0.2;
+        $("#dashboard-totalincome").text(income);
+        $("#dashboard-share").text(share.toFixed(2));
     })
-    markUp += '</tbody></table>';
-    $("#log-table-container").html(markUp);
-    $("#log-table").DataTable();
 }
 
 function logout(){

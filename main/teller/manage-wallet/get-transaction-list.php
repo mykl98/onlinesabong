@@ -29,7 +29,7 @@ if(isset($_POST)){
                     $value -> time = $row["time"];
                     $value -> amount = $row["amount"];
                     $value -> transaction = $row["transaction"];
-                    $value -> user = getAccountName($row["user"]);
+                    $value -> user = getAccountName($row["useridx"]);
                     array_push($data,$value);
                 }
             }

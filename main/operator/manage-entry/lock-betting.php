@@ -19,7 +19,7 @@
         function lockBetting($idx){
             global $conn;
             $status = getEntryStatus($idx);
-            if($status != "betting"){
+            if($status != "lastcall"){
                 return "You are not allowed to lock the betting of this entry. This entry is already on " .$status. " state.";
             }
             $table = "entry";

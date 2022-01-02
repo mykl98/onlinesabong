@@ -49,10 +49,12 @@ function getDashboardDetails(){
 function renderDashboardDetails(data){
     var lists = JSON.parse(data);
     lists.forEach(function(list){
-        $("#dashboard-account").text(list.account);
-        $("#dashboard-church").text(list.church);
-        $("#dashboard-unprocessed").text(list.unprocessed);
-        $("#dashboard-total").text(list.total);
+        var cashIn = list.cashin;
+        var cashOut = list.cashout;
+        var balance = cashIn*1 - cashOut*1;
+        $("#dashboard-cashin").text(cashIn);
+        $("#dashboard-cashout").text(cashOut);
+        $("#dashboard-balance").text(balance);
     })
 }
 

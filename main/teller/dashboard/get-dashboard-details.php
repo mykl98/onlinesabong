@@ -1,59 +1,37 @@
 <?php
     if($_POST){
         include_once "../../../system/backend/config.php";
+        $cashIn = 0;
+        $cashOut = 0;
 
-        function getAccountCount(){
-            global $conn;
-            $table = "account";
-            $sql = "SELECT idx FROM `$table`";
+        function getTransaction($tellerIdx){
+            global $conn,$cashIn,$cashOut;
+            $table = "transaction";
+            $sql = "SELECT amount,transaction FROM `$table` WHERE telleridx='$tellerIdx'";
             if($result=mysqli_query($conn,$sql)){
-                return mysqli_num_rows($result);
+                if(mysqli_num_rows($result) > 0){
+                    while($row=mysqli_fetch_array($result)){
+                        $transaction = $row["transaction"];
+                        $amount = $row["amount"];
+                        if($transaction == "cashin"){
+                            $cashIn += $amount;
+                        }else{
+                            $cashOut += $amount;
+                        }
+                    }
+                }
             }else{
                 return "System Error!";
             }
         }
 
-        function getChurchCount(){
-            global $conn;
-            $table = "church";
-            $sql = "SELECT idx FROM `$table`";
-            if($result=mysqli_query($conn,$sql)){
-                return mysqli_num_rows($result);
-            }else{
-                return "System Error!";
-            }
-        }
-
-        function getUnprocessedBookingCount(){
-            global $conn;
-            $table = "booking";
-            $sql = "SELECT idx FROM `$table` WHERE status='processing'";
-            if($result=mysqli_query($conn,$sql)){
-                return mysqli_num_rows($result);
-            }else{
-                return "System Error!";
-            }
-        }
-
-        function getBookingTotalCount(){
-            global $conn;
-            $table = "booking";
-            $sql = "SELECT idx FROM `$table`";
-            if($result=mysqli_query($conn,$sql)){
-                return mysqli_num_rows($result);
-            }else{
-                return "System Error!";
-            }
-        }
-
-        function getDashboardDetails(){
-            global $vaccinee,$first,$complete;
+        function getDashboardDetails($tellerIdx){
+            global $cashIn,$cashOut;
+            getTransaction($tellerIdx);
             $data = array();
             $value = new \StdClass();
-            $value -> account = getAccountCount();
-            $value -> church = getChurchCount();
-            $value -> unprocessed = getUnprocessedBookingCount();
-            $value -> total = getBookingTotalCount(0);
+            $value -> cashin = $cashIn;
+            $value -> cashout = $cashOut;
             array_push($data,$value);
             $data = json_encode($data);
             return "true*_*" . $data;
@@ -61,7 +39,8 @@
 
         session_start();
         if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "teller"){
-            echo getDashboardDetails();
+            $tellerIdx = $_SESSION["loginidx"];
+            echo getDashboardDetails($tellerIdx);
         }else{
             echo "Access Denied!";
         }

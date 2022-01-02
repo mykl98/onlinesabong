@@ -1,7 +1,7 @@
 $(document).ready(function(){
     setTimeout(function(){
-        $("#electronic-logbook-menu").attr("href","#");
-        $("#electronic-logbook-menu").addClass("active");
+        $("#manage-wallet-menu").attr("href","#");
+        $("#manage-wallet-menu").addClass("active");
     },100)
 })
 
@@ -75,6 +75,7 @@ function getTransactionList(){
 }
 
 function renderTransactionList(data){
+    //alert(data);
     var lists = JSON.parse(data);
     var markUp = '<table id="transaction-table" class="table table-striped table-bordered table-sm">\
                         <thead>\
@@ -109,6 +110,7 @@ function renderTransactionList(data){
 
 function scanQr(){
     $("#qr-reader-modal").modal("show");
+    prevDecodedText = "";
 }
 
 function getUserDetail(qr){
@@ -134,63 +136,51 @@ function getUserDetail(qr){
 
 function renderUserDetail(data){
     var lists = JSON.parse(data);
-    var markUp = '<table id="qr-booking-table" class="table table-striped table-bordered table-sm">\
-                    <thead>\
-                        <tr>\
-                            <th>Type</th>\
-                            <th>Time</th>\
-                        </tr>\
-                    </thead>\
-                    <tbody>';
     lists.forEach(function(list){
-        var bookings = JSON.parse(list.booking);
-        bookings.forEach(function(book){   
-            markUp += '<tr>\
-                        <td>'+book.type+'</td>\
-                        <td>'+book.time+'</td>\
-                       </tr>';
-        })
-        
-        userIdx = list.idx;
-        $("#qr-name").val(list.name);
-        $("#qr-address").val(list.address);
         var image = list.image;
-        if(image != ""){
+        if(image != "" && image != undefined){
             $("#qr-image").attr("src",image);
         }
+        $("#qr-name").val(list.name);
+        $("#qr-wallet").val(list.wallet);
+        userIdx = list.idx;
     })
-    markUp += '</tbody></table>';
-    $("#qr-booking-table-container").html(markUp);
     $("#qr-scan-modal").modal("show");
 }
 
-function processTransaction(){
-    if(userIdx == ""){
-        error = "*Unable to login, No scanned user detected.";
+function process(){
+    var amount = $("#qr-amount").val();
+    var type = $("#qr-type").val();
+    var error = "";
+    //alert(type);
+    if(amount == "" || amount == undefined){
+        error = "*Amount field should not be empty!";
+    }else if(type == "" || type == undefined){
+        error = "*Please select transaction type.";
     }else{
-        if(confirm("Are your sure you want to process this transaction?")){
-            $.ajax({
-                type: "POST",
-                url: "process-transaction.php",
-                dataType: 'html',
-                data: {
-                    idx:userIdx,
-                    activity:"login"
-                },
-                success: function(response){
-                    var resp = response.split("*_*");
-                    if(resp[0] == "true"){
-                        $("#qr-scan-modal").modal("hide");
-                        getLogList();
-                    }else if(resp[0] == "false"){
-                        alert(resp[1]);
-                    } else{
-                        alert(response);
-                    }
+        $.ajax({
+            type: "POST",
+            url: "process.php",
+            dataType: 'html',
+            data: {
+                idx:userIdx,
+                amount:amount,
+                type:type
+            },
+            success: function(response){
+                var resp = response.split("*_*");
+                if(resp[0] == "true"){
+                    $('#qr-scan-modal').modal("hide");
+                    getTransactionList();
+                }else if(resp[0] == "false"){
+                    alert(resp[1]);
+                } else{
+                    alert(response);
                 }
-            });
-        }
+            }
+        });
     }
+    $("#qr-scan-modal-error").text(error);
 }
 
 var prevDecodedText = "";
@@ -198,19 +188,13 @@ var prevDecodedText = "";
 function onScanError(errorMessage) {
     // handle on error condition, with error message
     alert(errorMessage);
-    setTimeout(function(){
-        prevDecodedText = "";
-    },10000);
 }
 
 function onScanSuccess(decodedText, decodedResult) {
-    if(prevDecodedText !== decodedText){
+    if(prevDecodedText != decodedText){
         prevDecodedText = decodedText;
         getUserDetail(decodedText);
         $("#qr-reader-modal").modal("hide");
-        setTimeout(function(){
-            prevDecodedText = "";
-        },10000);
     }
 }
 

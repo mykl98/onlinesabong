@@ -23,7 +23,7 @@
                 return "You are not allowed to start the betting of this entry. This entry is already on " .$status. " state.";
             }
             $table = "entry";
-            $sql = "UPDATE `$table` SET status='betting' WHERE idx='$idx'";
+            $sql = "UPDATE `$table` SET status='open' WHERE idx='$idx'";
             if(mysqli_query($conn,$sql)){
                 systemLog("Started the betting for the entry with index number ".$idx,$_SESSION["loginidx"]);
                 return "true*_*";

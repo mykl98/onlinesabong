@@ -111,8 +111,16 @@ function renderEntryList(data){
                             <li><a href="#" class="pl-2" onclick="cancelEntry('+list.idx+')"> Cancel Entry</a></li>\
                         </ul>\
                       </div>';
-        }else if(status == "betting"){
-            status = '<span class="badge badge-success">Betting</span>';
+        }else if(status == "open"){
+            status = '<span class="badge badge-success">Open</span>';
+            button = '<div class="dropdown">\
+                        <button type="button" data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle">More</button>\
+                        <ul class="dropdown-menu">\
+                            <li><a href="#" class="pl-2" onclick="lastCallBetting('+list.idx+')"> Set Last Call</a></li>\
+                        </ul>\
+                      </div>';
+        }else if(status == "lastcall"){
+            status = '<span class="badge badge-warning">Last Call</span>';
             button = '<div class="dropdown">\
                         <button type="button" data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle">More</button>\
                         <ul class="dropdown-menu">\
@@ -283,6 +291,29 @@ function startBetting(idx){
     }
 }
 
+function lastCallBetting(idx){
+    if(confirm("Are you sure you want to send last call for this Entry?\nThis Action cannot be undone!")){
+        $.ajax({
+            type: "POST",
+            url: "last-call.php",
+            dataType: 'html',
+            data: {
+                idx:idx
+            },
+            success: function(response){
+                var resp = response.split("*_*");
+                if(resp[0] == "true"){
+                    getEntryList();
+                }else if(resp[0] == "false"){
+                    alert(resp[1]);
+                } else{
+                    alert(response);
+                }
+            }
+        });
+    }
+}
+
 function lockBetting(idx){
     if(confirm("Are you sure you want to lock the betting this Entry?\nThis Action cannot be undone!")){
         $.ajax({
@@ -309,6 +340,32 @@ function lockBetting(idx){
 function declareWinner(idx){
     entryIdx = idx;
     $("#declare-winner-modal").modal("show");
+}
+
+function declareDraw(){
+    $("#declare-winner-modal").modal("hide");
+    setTimeout(function(){
+        if(confirm("Are you sure you want to declare draw for this entry?\nThis Action cannot be undone!")){
+            $.ajax({
+                type: "POST",
+                url: "declare-draw.php",
+                dataType: 'html',
+                data: {
+                    idx:entryIdx
+                },
+                success: function(response){
+                    var resp = response.split("*_*");
+                    if(resp[0] == "true"){
+                        getEntryList();
+                    }else if(resp[0] == "false"){
+                        alert(resp[1]);
+                    } else{
+                        alert(response);
+                    }
+                }
+            });
+        }
+    },200)
 }
 
 function declareMeron(){

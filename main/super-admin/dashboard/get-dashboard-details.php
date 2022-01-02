@@ -1,59 +1,59 @@
 <?php
     if($_POST){
         include_once "../../../system/backend/config.php";
+        $total = 0;
+        $finish = 0;
+        $waiting = 0;
+        $cancelled = 0;
 
-        function getAccountCount(){
-            global $conn;
-            $table = "account";
-            $sql = "SELECT idx FROM `$table`";
+        function getEntryDetails(){
+            global $conn,$total,$finish,$waiting,$cancelled;
+            $table = "entry";
+            $sql = "SELECT status FROM `$table`";
             if($result=mysqli_query($conn,$sql)){
-                return mysqli_num_rows($result);
-            }else{
-                return "System Error!";
+                if(mysqli_num_rows($result) > 0){
+                    while($row=mysqli_fetch_array($result)){
+                        $status = $row["status"];
+                        if($status == "waiting"){
+                            $waiting += 1;
+                        }
+                        if($status == "finish"){
+                            $finish += 1;
+                        }
+                        if($status == "cancelled"){
+                            $cancelled += 1;
+                        }
+                        $total += 1;
+                    }
+                }
             }
         }
 
-        function getChurchCount(){
+        function getIncome(){
             global $conn;
-            $table = "church";
-            $sql = "SELECT idx FROM `$table`";
+            $amount = 0;
+            $table = "income";
+            $sql = "SELECT amount FROM `$table`";
             if($result=mysqli_query($conn,$sql)){
-                return mysqli_num_rows($result);
-            }else{
-                return "System Error!";
+                if(mysqli_num_rows($result) > 0){
+                    while($row=mysqli_fetch_array($result)){
+                        $amount += $row["amount"];
+                    }
+                }
             }
-        }
-
-        function getUnprocessedBookingCount(){
-            global $conn;
-            $table = "booking";
-            $sql = "SELECT idx FROM `$table` WHERE status='processing'";
-            if($result=mysqli_query($conn,$sql)){
-                return mysqli_num_rows($result);
-            }else{
-                return "System Error!";
-            }
-        }
-
-        function getBookingTotalCount(){
-            global $conn;
-            $table = "booking";
-            $sql = "SELECT idx FROM `$table`";
-            if($result=mysqli_query($conn,$sql)){
-                return mysqli_num_rows($result);
-            }else{
-                return "System Error!";
-            }
+            return $amount;
         }
 
         function getDashboardDetails(){
-            global $vaccinee,$first,$complete;
+            global $total,$finish,$waiting,$cancelled;
+            getEntryDetails();
             $data = array();
             $value = new \StdClass();
-            $value -> account = getAccountCount();
-            $value -> church = getChurchCount();
-            $value -> unprocessed = getUnprocessedBookingCount();
-            $value -> total = getBookingTotalCount(0);
+            $value -> total = $total;
+            $value -> finish = $finish;
+            $value -> waiting = $waiting;
+            $value -> cancelled = $cancelled;
+            $value -> income = getIncome();
             array_push($data,$value);
             $data = json_encode($data);
             return "true*_*" . $data;

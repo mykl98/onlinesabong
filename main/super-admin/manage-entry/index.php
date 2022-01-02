@@ -166,6 +166,9 @@
                         <button type="button" class="btn btn-success form-control" onclick="declareMeron()">Meron</button>
                     </div>
                     <div class="form-group">
+                        <button type="button" class="btn btn-info form-control" onclick="declareDraw()">Draw</button>
+                    </div>
+                    <div class="form-group">
                         <button type="button" class="btn btn-danger form-control" onclick="declareWala()">Wala</button>
                     </div>
                 </form>

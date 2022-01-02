@@ -16,16 +16,16 @@
             return $status;
         }
 
-        function startBetting($idx){
+        function lastCall($idx){
             global $conn;
             $status = getEntryStatus($idx);
-            if($status != "waiting"){
-                return "You are not allowed to start the betting of this entry. This entry is already on " .$status. " state.";
+            if($status != "open"){
+                return "You are not allowed to send last call for this entry. This entry is already on " .$status. " state.";
             }
             $table = "entry";
-            $sql = "UPDATE `$table` SET status='open' WHERE idx='$idx'";
+            $sql = "UPDATE `$table` SET status='lastcall' WHERE idx='$idx'";
             if(mysqli_query($conn,$sql)){
-                systemLog("Started the betting for the entry with index number ".$idx,$_SESSION["loginidx"]);
+                systemLog("Send last call for the entry with index number ".$idx,$_SESSION["loginidx"]);
                 return "true*_*";
             }else{
                 return "System Error!";
@@ -33,9 +33,9 @@
         }
 
         session_start();
-        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "super-admin"){
+        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "operator"){
             $idx = sanitize($_POST["idx"]);
-            echo startBetting($idx);
+            echo lastCall($idx);
         }else{
             echo "Access Denied!";
         }

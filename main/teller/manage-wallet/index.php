@@ -17,7 +17,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Teller | Cash In</title>
+    <title>Teller | Manage Wallet</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -81,7 +81,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Manage Cash In</h1>
+                            <h1 class="m-0 text-dark">Manage Wallet</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -98,7 +98,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Cash In List</h3>
+                                <h3 class="card-title">Transaction List</h3>
                                 <button class="btn btn-sm bg-success float-right mr-2" onclick="scanQr()"><span class="fa fa-qrcode"></span> Scan QR</button>
                             </div>
                             <div class="card-body">
@@ -137,16 +137,27 @@
                             <input type="text" class="form-control" id="qr-name" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="qr-address" class="col-form-label">Address:</label>
-                            <textarea class="form-control" id="qr-address" readonly></textarea>
+                            <label for="qr-wallet" class="col-form-label">Wallet:</label>
+                            <input type="text" class="form-control" id="qr-wallet" readonly>
                         </div>
-                        <div id="qr-booking-table-container"></div>
+                        <div class="form-group">
+                            <label for="qr-amount" class="col-form-label">Amount:</label>
+                            <input type="number" class="form-control" id="qr-amount">
+                        </div>
+                        <div class="form-group">
+                            <label for="qr-type" class="col-form-label">Transaction Type:</label>
+                            <select class="form-control" id="qr-type">
+                                <option value="">SELECT TRANSACTION</option>
+                                <option value="cashin">Cash In</option>
+                                <option value="cashout">Cash Out</option>
+                            </select>
+                        </div>
                         <p id="qr-scan-modal-error" class="text-danger font-italic small"></p>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onclick="qrLogout()">Logout</button>
-                    <button type="button" class="btn btn-success" onclick="qrLogin()">Login</button>
+                    <button type="button" class="btn btn-seconday" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" onclick="process()">Process</button>
                 </div>
             </div>
         </div>
