@@ -113,16 +113,21 @@ function renderDetails(data){
         var walaWin = meronRemaining * (walaBet/walaMainBet);
         var meronPayout = (meronBet*1 + meronWin).toFixed(2);
         var walaPayout = (walaBet*1 + walaWin).toFixed(2);
+        var meronPer100 = walaRemaining * (100 / meronMainBet);
+        var walaPer100 = meronRemaining * (100 / walaMainBet);
+        meronPer100 = meronPer100 + 100;
+        walaPer100 = walaPer100 + 100;
         $("#meron-main-bet").text(meronMainBet);
         $("#wala-main-bet").text(walaMainBet);
         $("#meron-bet").text(meronBet);
         $("#wala-bet").text(walaBet);
         $("#meron-payout").text(meronPayout);
         $("#wala-payout").text(walaPayout);
+        $("#meron-per100").text(meronPer100.toFixed(2));
+        $("#wala-per100").text(walaPer100.toFixed(2));
         var status = list.fightstatus;
         if(lastStatus != status){
             lastStatus = status;
-            //alert(status);
             if(status == "open"){
                 switchButtonState("enabled");
                 status = '<p class="pl-2 font-weight-bold text-right">Betting: <span class="badge badge-success">OPEN</span></p>';

@@ -106,6 +106,7 @@
                             <p class="pl-2" id="meron-bet">0</p>
                             <p class="pl-2 mt-4 mb-0">Payout</p>
                             <p class="pl-2" id="meron-payout">0</p>
+                            <p class="pl-2 text-info" id="meron-per100">0</p>
                         </div>
                         <div class="col-lg-3 col-6">
                             <button id="wala-button" class="btn btn-danger w-100 p-3" onclick="addBetWala()" disabled="true">WALA</button>
@@ -114,6 +115,7 @@
                             <p class="pl-2" id="wala-bet">0</p>
                             <p class="pl-2 mt-4 mb-0">Payout</p>
                             <p class="pl-2" id="wala-payout">0</p>
+                            <p class="pl-2 text-info" id="wala-per100">0</p>
                         </div>
                     </div>
                 </div><!-- /.container-fluid -->

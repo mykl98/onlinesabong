@@ -59,7 +59,7 @@
             global $conn;
             $table = "bet";
             $status = getFightStatus($fightIdx);
-            if($status != "open"){
+            if($status != "open" && $status != "lastcall"){
                 return "You could no longer add bet for this fight!";
             }
             $amount = getWalletAmount($userIdx);
