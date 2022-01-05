@@ -59,7 +59,7 @@
             global $conn;
             $table = "bet";
             $status = getFightStatus($fightIdx);
-            if($status != "open" && $status != "lastcall"){
+            if($status != "open" && $status != "lastcall" && $status != "meronlocked" && $status != "walalocked"){
                 return "You could no longer add bet for this fight!";
             }
             $amount = getWalletAmount($userIdx);

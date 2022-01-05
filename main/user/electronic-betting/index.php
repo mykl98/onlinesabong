@@ -81,7 +81,10 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <img src="<?php echo $baseUrl?>/system/images/sabong.jpg" class="w-100">
-                            <p id="announcement" class="p-2">Sample announcement here sample announcemnt here sample announcemnt here sample announcemnt here sample announcemnt here sample announcemnt here sample announcemnt here sample announcemnt here</p>
+                            <div class="form-group">
+                                <textarea class="form-control mt-1" id="description"></textarea>
+                            </div>
+                            <!--p id="description" class="p-2"></p-->
                             <hr>
                         </div>
                     </div>

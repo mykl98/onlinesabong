@@ -4,6 +4,7 @@
         $fightNumber = "0";
         $fightIdx = "";
         $fightStatus = "";
+        $fightDescription = "";
 
         function getMeronTotalBet($fightIdx){
             global $conn;
@@ -36,15 +37,16 @@
         }
 
         function getFight(){
-            global $conn,$fightNumber,$fightIdx,$fightStatus;
+            global $conn,$fightNumber,$fightIdx,$fightStatus,$fightDescription;
             $table = "entry";
-            $sql = "SELECT idx,number,status FROM `$table` WHERE status='open'||status='lastcall'||status='locked'";
+            $sql = "SELECT idx,number,description,status FROM `$table` WHERE status='open'||status='lastcall'||status='locked'||status='meronlocked'||status='walalocked'";
             if($result=mysqli_query($conn,$sql)){
                 if(mysqli_num_rows($result) > 0){
                     $row = mysqli_fetch_array($result);
                     $fightNumber = $row["number"];
                     $fightIdx = $row["idx"];
                     $fightStatus = $row["status"];
+                    $fightDescription = $row["description"];
                 }
             }
         }
@@ -92,7 +94,7 @@
         }
 
         function getDetails($userIdx){
-            global $fightNumber,$fightIdx,$fightStatus;
+            global $fightNumber,$fightIdx,$fightStatus,$fightDescription;
             getFight();
             $data = array();
             $value = new \StdClass();
@@ -100,6 +102,7 @@
             $value -> fightnumber = $fightNumber;
             $value -> fightidx = $fightIdx;
             $value -> fightstatus = $fightStatus;
+            $value -> fightdescription = $fightDescription;
             $value -> meronmainbet = getMeronTotalBet($fightIdx);
             $value -> walamainbet = getWalaTotalBet($fightIdx);
             $value -> meronbet = getMeronBet($userIdx,$fightIdx);

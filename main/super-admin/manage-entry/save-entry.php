@@ -15,7 +15,7 @@ if($_POST){
         return $status;
     }
 
-    function saveEntry($idx,$number,$meron,$wala){
+    function saveEntry($idx,$number,$meron,$wala,$description){
         global $conn;
         if($idx != ""){
             $status = getEntryStatus($idx);
@@ -26,7 +26,7 @@ if($_POST){
         $date = date("Y-m-d");
         $table = "entry";
         if($idx == ""){
-            $sql = "INSERT INTO `$table` (date,number,meron,wala,status) VALUES ('$date','$number','$meron','$wala','waiting')";
+            $sql = "INSERT INTO `$table` (date,number,meron,wala,description,status) VALUES ('$date','$number','$meron','$wala','$description','waiting')";
             if(mysqli_query($conn,$sql)){
                 systemLog("Add new entry with fight number: ".$number,$_SESSION["loginidx"]);
                 return "true*_*";
@@ -34,7 +34,7 @@ if($_POST){
                 return "System Failed!";
             }
         }else{
-            $sql = "UPDATE `$table` SET number='$number',meron='$meron',wala='$wala' WHERE idx='$idx'";
+            $sql = "UPDATE `$table` SET number='$number',meron='$meron',wala='$wala',description='$description' WHERE idx='$idx'";
             if(mysqli_query($conn,$sql)){
                 systemLog("Edit entry with fight number: ".$number,$_SESSION["loginidx"]);
                 return "true*_*";
@@ -50,9 +50,10 @@ if($_POST){
         $number = sanitize($_POST["number"]);
         $meron = sanitize($_POST["meron"]);
         $wala = sanitize($_POST["wala"]);
+        $description = sanitize($_POST["description"]);
 
-        if(!empty($number) && !empty($meron) && !empty($wala)){
-            echo saveEntry($idx,$number,$meron,$wala);
+        if(!empty($number) && !empty($meron) && !empty($wala) && !empty($description)){
+            echo saveEntry($idx,$number,$meron,$wala,$description);
         }else{
             echo "Network Error!";
         }

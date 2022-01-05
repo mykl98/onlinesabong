@@ -93,6 +93,7 @@ function renderEntryList(data){
                                 <th>Fight Number</th>\
                                 <th>Meron</th>\
                                 <th>Wala</th>\
+                                <th>Description</th>\
                                 <th>Status</th>\
                                 <th style="max-width:50px;min-width:50px;">Action</th>\
                             </tr>\
@@ -117,6 +118,8 @@ function renderEntryList(data){
                         <button type="button" data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle">More</button>\
                         <ul class="dropdown-menu">\
                             <li><a href="#" class="pl-2" onclick="lastCallBetting('+list.idx+')"> Set Last Call</a></li>\
+                            <li><a href="#" class="pl-2" onclick="meronLock('+list.idx+')"> Lock Meron</a></li>\
+                            <li><a href="#" class="pl-2" onclick="walaLock('+list.idx+')"> Lock Wala</a></li>\
                         </ul>\
                       </div>';
         }else if(status == "lastcall"){
@@ -124,6 +127,8 @@ function renderEntryList(data){
             button = '<div class="dropdown">\
                         <button type="button" data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle">More</button>\
                         <ul class="dropdown-menu">\
+                            <li><a href="#" class="pl-2" onclick="meronLock('+list.idx+')"> Lock Meron</a></li>\
+                            <li><a href="#" class="pl-2" onclick="walaLock('+list.idx+')"> Lock Wala</a></li>\
                             <li><a href="#" class="pl-2" onclick="lockBetting('+list.idx+')"> Lock Betting</a></li>\
                         </ul>\
                       </div>';
@@ -135,11 +140,30 @@ function renderEntryList(data){
                             <li><a href="#" class="pl-2" onclick="declareWinner('+list.idx+')"> Declare Winner</a></li>\
                         </ul>\
                       </div>';
+        }else if(status == "meronlocked"){
+            status = '<span class="badge badge-danger">Meron Locked</span>';
+            button = '<div class="dropdown">\
+                        <button type="button" data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle">More</button>\
+                        <ul class="dropdown-menu">\
+                            <li><a href="#" class="pl-2" onclick="startBetting('+list.idx+')"> Meron Open</a></li>\
+                            <li><a href="#" class="pl-2" onclick="lockBetting('+list.idx+')"> Lock Betting</a></li>\
+                        </ul>\
+                      </div>';
+        }else if(status == "walalocked"){
+            status = '<span class="badge badge-danger">Wala Locked</span>';
+            button = '<div class="dropdown">\
+                        <button type="button" data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle">More</button>\
+                        <ul class="dropdown-menu">\
+                            <li><a href="#" class="pl-2" onclick="startBetting('+list.idx+')"> Wala Open</a></li>\
+                            <li><a href="#" class="pl-2" onclick="lockBetting('+list.idx+')"> Lock Betting</a></li>\
+                        </ul>\
+                      </div>';
         }else if(status == "finish"){
             status = '<span class="badge badge-warning">Finish</span>';
             button = '<div class="dropdown">\
                         <button type="button" data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle">More</button>\
                         <ul class="dropdown-menu">\
+                            <li><a href="#" class="pl-2" onclick="betList('+list.idx+')"> Bet List</a></li>\
                             <li><a href="#" class="pl-2" onclick="deleteEntry('+list.idx+')"> Delete Entry</a></li>\
                         </ul>\
                       </div>';
@@ -157,6 +181,7 @@ function renderEntryList(data){
                         <td>'+list.number+'</td>\
                         <td>'+list.meron+'</td>\
                         <td>'+list.wala+'</td>\
+                        <td>'+list.description+'</td>\
                         <td>'+status+'</td>\
                         <td>'+button+'</td>\
                    </tr>';
@@ -200,15 +225,69 @@ function renderEditEntry(data){
         $("#entry-number").val(list.number);
         $("#entry-meron").val(list.meron);
         $("#entry-wala").val(list.wala);
+        $("#entry-description").val(list.description);
     })
     $("#add-edit-account-modal-title").text("Edit Entry");
     $("#add-edit-entry-modal").modal("show");
+}
+
+function betList(idx){
+    $.ajax({
+        type: "POST",
+        url: "get-bet-list.php",
+        dataType: 'html',
+        data: {
+            idx:idx
+        },
+        success: function(response){
+            var resp = response.split("*_*");
+            if(resp[0] == "true"){
+                renderBetList(resp[1]);
+            }else if(resp[0] == "false"){
+                alert(resp[1]);
+            } else{
+                alert(response);
+            }
+        }
+    });
+}
+
+function renderBetList(data){
+    //alert(data);
+    var lists = JSON.parse(data);
+    var markUp = '<table id="bet-list-table" class="table table-striped table-bordered table-sm">\
+                        <thead>\
+                            <tr>\
+                                <th>User</th>\
+                                <th>Side</th>\
+                                <th>Amount</th>\
+                            </tr>\
+                        </thead>\
+                        <tbody>';
+    lists.forEach(function(list){
+        var side = list.side;
+        if(side == "meron"){
+            side = '<span class="badge badge-success">Meron</span>';
+        }else{
+            side = '<span class="badge badge-danger">Wala</span>';
+        }
+        markUp += '<tr>\
+                        <td>'+list.user+'</td>\
+                        <td>'+side+'</td>\
+                        <td>'+list.amount+'</td>\
+                   </tr>';
+    })
+    markUp += '</tbody></table>';
+    $("#bet-list-table-container").html(markUp);
+    $("#bet-list-table").DataTable();
+    $("#bet-list-modal").modal("show");
 }
 
 function saveEntry(){
     var number = $("#entry-number").val();
     var meron = $("#entry-meron").val();
     var wala = $("#entry-wala").val();
+    var description = $("#entry-description").val();
 
     var error = "";
     if(number == "" || number == undefined){
@@ -217,6 +296,8 @@ function saveEntry(){
         error = "*Meron description field should not be empty.";
     }else if(wala == "" || wala == undefined){
         error = "*Wala description field should not be empty.";
+    }else if(description == "" || description == undefined){
+        error = "*Description field should not be empty.";
     }else{
         $.ajax({
             type: "POST",
@@ -226,7 +307,8 @@ function saveEntry(){
                 idx:entryIdx,
                 number:number,
                 meron:meron,
-                wala:wala
+                wala:wala,
+                description:description
             },
             success: function(response){
                 var resp = response.split("*_*");
@@ -296,6 +378,52 @@ function lastCallBetting(idx){
         $.ajax({
             type: "POST",
             url: "last-call.php",
+            dataType: 'html',
+            data: {
+                idx:idx
+            },
+            success: function(response){
+                var resp = response.split("*_*");
+                if(resp[0] == "true"){
+                    getEntryList();
+                }else if(resp[0] == "false"){
+                    alert(resp[1]);
+                } else{
+                    alert(response);
+                }
+            }
+        });
+    }
+}
+
+function meronLock(idx){
+    if(confirm("Are you sure you want to lock the meron betting for this Entry?")){
+        $.ajax({
+            type: "POST",
+            url: "meron-lock.php",
+            dataType: 'html',
+            data: {
+                idx:idx
+            },
+            success: function(response){
+                var resp = response.split("*_*");
+                if(resp[0] == "true"){
+                    getEntryList();
+                }else if(resp[0] == "false"){
+                    alert(resp[1]);
+                } else{
+                    alert(response);
+                }
+            }
+        });
+    }
+}
+
+function walaLock(idx){
+    if(confirm("Are you sure you want to lock the wala betting for this Entry?")){
+        $.ajax({
+            type: "POST",
+            url: "wala-lock.php",
             dataType: 'html',
             data: {
                 idx:idx

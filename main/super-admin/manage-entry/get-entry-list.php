@@ -16,6 +16,7 @@
                         $value -> number = $row["number"];
                         $value -> meron = $row["meron"];
                         $value -> wala = $row["wala"];
+                        $value -> description = $row["description"];
                         $value -> status = $row["status"];
                         array_push($data,$value);
                     }

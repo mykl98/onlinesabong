@@ -16,27 +16,17 @@
             return $status;
         }
 
-        function getEntryDetail($idx){
+        function meronLock($idx){
             global $conn;
             $status = getEntryStatus($idx);
-            if($status != "waiting"){
-                return "You are not allowed to edit this entry! This entry is already on " .$status. " state.";
+            if($status != "open" && $status != "lastcall"){
+                return "You are not allowed to lock the betting for meron. This entry is already on " .$status. " state.";
             }
-            $data = array();
             $table = "entry";
-            $sql = "SELECT * FROM `$table` WHERE idx='$idx'";
-            if($result=mysqli_query($conn,$sql)){
-                if(mysqli_num_rows($result) > 0){
-                    $row = mysqli_fetch_array($result);
-                    $value = new \StdClass();
-                    $value -> number = $row["number"];
-                    $value -> meron = $row["meron"];
-                    $value -> wala = $row["wala"];
-                    $value -> description = $row["description"];
-                    array_push($data,$value);
-                }
-                $data = json_encode($data);
-                return "true*_*" . $data;
+            $sql = "UPDATE `$table` SET status='meronlocked' WHERE idx='$idx'";
+            if(mysqli_query($conn,$sql)){
+                systemLog("Locked the betting for meron with index number ".$idx,$_SESSION["loginidx"]);
+                return "true*_*";
             }else{
                 return "System Error!";
             }
@@ -45,7 +35,7 @@
         session_start();
         if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "super-admin"){
             $idx = sanitize($_POST["idx"]);
-            echo getEntryDetail($idx);
+            echo meronLock($idx);
         }else{
             echo "Access Denied!";
         }

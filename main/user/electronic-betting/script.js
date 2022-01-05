@@ -28,6 +28,7 @@ $(".modal").on("hidden.bs.modal",function(){
 var fightIdx;
 var side;
 var lastStatus = "1234";
+var lastDescription = "";
 var baseUrl = $("#base-url").text();
 getUserDetails();
 getDetails();
@@ -100,6 +101,11 @@ function renderDetails(data){
     lists.forEach(function(list){
         $("#wallet").text(list.wallet);
         $("#fight-number").text(list.fightnumber);
+        if(lastDescription != list.fightdescription){
+            lastDescription = list.fightdescription;
+            $("#description").text(list.fightdescription);
+            $("#description").height( $("textarea")[0].scrollHeight );
+        }
         fightIdx = list.fightidx;
         var meronMainBet = list.meronmainbet;
         var walaMainBet = list.walamainbet;
@@ -134,6 +140,12 @@ function renderDetails(data){
             }else if(status == "lastcall"){
                 switchButtonState("enabled");
                 status = '<p class="pl-2 font-weight-bold text-right">Betting: <span class="badge badge-warning">LAST CALL</span></p>';
+            }else if(status == "meronlocked"){
+                switchButtonState("meronlocked");
+                status = '<p class="pl-2 font-weight-bold text-right">Betting: <span class="badge badge-danger">MERON LOCKED</span></p>';
+            }else if(status == "walalocked"){
+                switchButtonState("walalocked");
+                status = '<p class="pl-2 font-weight-bold text-right">Betting: <span class="badge badge-danger">WALA LOCKED</span></p>';
             }else if(status == "locked"){
                 switchButtonState("disabled");
                 status = '<p class="pl-2 font-weight-bold text-right">Betting: <span class="badge badge-danger">LOCKED</span></p>';
@@ -154,13 +166,27 @@ function switchButtonState(state){
         $("#wala-button").removeClass("btn-secondary");
         $("#meron-button").addClass("btn-success");
         $("#wala-button").addClass("btn-danger");
-    }else{
+    }else if(state == "disabled"){
         $("#meron-button").prop("disabled",true);
         $("#wala-button").prop("disabled",true);
         $("#meron-button").removeClass("btn-success");
         $("#wala-button").removeClass("btn-danger");
         $("#meron-button").addClass("btn-secondary");
         $("#wala-button").addClass("btn-secondary");
+    }else if(state == "meronlocked"){
+        $("#meron-button").prop("disabled",true);
+        $("#meron-button").removeClass("btn-success");
+        $("#meron-button").addClass("btn-secondary");
+        $("#wala-button").prop("disabled",false);
+        $("#wala-button").removeClass("btn-secondary");
+        $("#wala-button").addClass("btn-danger");
+    }else if(state == "walalocked"){
+        $("#wala-button").prop("disabled",true);
+        $("#wala-button").removeClass("btn-danger");
+        $("#wala-button").addClass("btn-secondary");
+        $("#meron-button").prop("disabled",false);
+        $("#meron-button").removeClass("btn-secondary");
+        $("#meron-button").addClass("btn-success");
     }
 }
 
