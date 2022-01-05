@@ -17,7 +17,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Operator | Manage Entry</title>
+    <title>Super Admin | Manage Entry</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -69,7 +69,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link text-center pb-0">
-                <p id="global-department-name" class="">Operator</p>
+                <p id="global-department-name" class="">Super Admin</p>
             </a>
 
             <?php include "../side-nav-bar.html"?>
@@ -134,11 +134,15 @@
                     </div>
                     <div class="form-group">
                         <label for="entry-meron" class="col-form-label">Meron:</label>
-                        <textarea class="form-control" id="entry-meron"></textarea>
+                        <input type="text" class="form-control" id="entry-meron"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="entry-wala" class="col-form-label">Wala:</label>
-                        <textarea class="form-control" id="entry-wala"></textarea>
+                        <input type="text" class="form-control" id="entry-wala">
+                    </div>
+                    <div class="form-group">
+                        <label for="entry-description" class="col-form-label">Description:</label>
+                        <textarea class="form-control" id="entry-description"></textarea>
                     </div>
                 </form>
                 <p id="add-edit-entry-modal-error" class="text-danger font-italic small"></p>
@@ -146,6 +150,22 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" onclick="saveEntry()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="bet-list-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Bet List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="bet-list-table-container"></div>
             </div>
         </div>
     </div>

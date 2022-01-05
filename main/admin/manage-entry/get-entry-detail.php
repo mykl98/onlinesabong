@@ -32,6 +32,7 @@
                     $value -> number = $row["number"];
                     $value -> meron = $row["meron"];
                     $value -> wala = $row["wala"];
+                    $value -> description = $row["description"];
                     array_push($data,$value);
                 }
                 $data = json_encode($data);

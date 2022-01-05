@@ -94,17 +94,6 @@
             }
         }
 
-        function clearAllBets(){
-            global $conn;
-            $table = "bet";
-            $sql = "DELETE FROM `$table`";
-            if(mysqli_query($conn,$sql)){
-                return "true";
-            }else{
-                return "System Error!";
-            }
-        }
-
         function declareWala($idx){
             global $conn;
             $status = getEntryStatus($idx);
@@ -117,12 +106,7 @@
                 systemLog("Declare wala as winner for the entry with index number ".$idx,$_SESSION["loginidx"]);
                 $release = releasePayment($idx);
                 if($release == "true"){
-                    $clear = clearAllBets();
-                    if($clear == "true"){
-                        return "true*_*";
-                    }else{
-                        return $clear;
-                    }
+                    return "true*_*";
                 }else{
                     return $release;
                 }

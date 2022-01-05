@@ -16,16 +16,16 @@
             return $status;
         }
 
-        function lockBetting($idx){
+        function meronLock($idx){
             global $conn;
             $status = getEntryStatus($idx);
-            if($status != "lastcall" && $status != "meronlocked" && $status != "walalocked"){
-                return "You are not allowed to lock the betting of this entry. This entry is already on " .$status. " state.";
+            if($status != "open" && $status != "lastcall"){
+                return "You are not allowed to lock the betting for meron. This entry is already on " .$status. " state.";
             }
             $table = "entry";
-            $sql = "UPDATE `$table` SET status='locked' WHERE idx='$idx'";
+            $sql = "UPDATE `$table` SET status='meronlocked' WHERE idx='$idx'";
             if(mysqli_query($conn,$sql)){
-                systemLog("Locked the betting for the entry with index number ".$idx,$_SESSION["loginidx"]);
+                systemLog("Locked the betting for meron with index number ".$idx,$_SESSION["loginidx"]);
                 return "true*_*";
             }else{
                 return "System Error!";
@@ -35,7 +35,7 @@
         session_start();
         if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "admin"){
             $idx = sanitize($_POST["idx"]);
-            echo lockBetting($idx);
+            echo meronLock($idx);
         }else{
             echo "Access Denied!";
         }

@@ -19,7 +19,7 @@
         function startBetting($idx){
             global $conn;
             $status = getEntryStatus($idx);
-            if($status != "waiting"){
+            if($status != "waiting" && $status !="meronlocked" && $status !="walalocked"){
                 return "You are not allowed to start the betting of this entry. This entry is already on " .$status. " state.";
             }
             $table = "entry";
