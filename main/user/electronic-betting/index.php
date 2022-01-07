@@ -143,7 +143,7 @@
                 <form>
                     <div class="form-group">
                         <label for="bet-amount" class="col-form-label">Amount:</label>
-                        <input type="number" class="form-control" id="bet-amount">
+                        <input type="text" class="form-control currency" id="bet-amount">
                     </div>
                 </form>
                 <p id="add-bet-modal-error" class="text-danger font-italic small"></p>

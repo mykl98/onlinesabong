@@ -17,7 +17,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Super Admin | Manage Entry</title>
+    <title>Operator | Manage Entry</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -69,7 +69,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link text-center pb-0">
-                <p id="global-department-name" class="">Super Admin</p>
+                <p id="global-department-name" class="">Operator</p>
             </a>
 
             <?php include "../side-nav-bar.html"?>
@@ -134,11 +134,11 @@
                     </div>
                     <div class="form-group">
                         <label for="entry-meron" class="col-form-label">Meron:</label>
-                        <input type="text" class="form-control" id="entry-meron"></textarea>
+                        <textarea class="form-control" id="entry-meron"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="entry-wala" class="col-form-label">Wala:</label>
-                        <input type="text" class="form-control" id="entry-wala">
+                        <textarea class="form-control" id="entry-wala"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="entry-description" class="col-form-label">Description:</label>

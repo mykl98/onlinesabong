@@ -50,11 +50,13 @@ function renderDashboardDetails(data){
     var lists = JSON.parse(data);
     lists.forEach(function(list){
         var cashIn = list.cashin;
+        cashIn = cashIn * 1;
         var cashOut = list.cashout;
+        cashOut = cashOut * 1;
         var balance = cashIn*1 - cashOut*1;
-        $("#dashboard-cashin").text(cashIn);
-        $("#dashboard-cashout").text(cashOut);
-        $("#dashboard-balance").text(balance);
+        $("#dashboard-cashin").text(formatToCurrency(cashIn));
+        $("#dashboard-cashout").text(formatToCurrency(cashOut));
+        $("#dashboard-balance").text(formatToCurrency(balance));
     })
 }
 
@@ -89,6 +91,11 @@ function renderUserDetails(data){
         $("#global-user-name").text(list.name);
     })
 
+}
+
+function formatToCurrency(input){
+    var output = parseFloat(input).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+    return "₱" + output;
 }
 
 function logout(){

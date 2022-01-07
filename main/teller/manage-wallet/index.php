@@ -138,11 +138,11 @@
                         </div>
                         <div class="form-group">
                             <label for="qr-wallet" class="col-form-label">Wallet:</label>
-                            <input type="text" class="form-control" id="qr-wallet" readonly>
+                            <input type="text" class="form-control currency" id="qr-wallet" readonly>
                         </div>
                         <div class="form-group">
                             <label for="qr-amount" class="col-form-label">Amount:</label>
-                            <input type="number" class="form-control" id="qr-amount">
+                            <input type="text" class="form-control currency" id="qr-amount" value="0">
                         </div>
                         <div class="form-group">
                             <label for="qr-type" class="col-form-label">Transaction Type:</label>

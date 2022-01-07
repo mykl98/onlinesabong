@@ -25,8 +25,8 @@ $password = "";
 $dbname = "onlinesabong";
 $conn = new mysqli($servername, $username, $password, $dbname);
 //$baseUrl = "http://localhost/onlinesabong";
-$baseUrl = "http://192.168.1.9/onlinesabong";
-//$baseUrl = "http://192.168.1.2/onlinesabong";
+//$baseUrl = "http://192.168.1.9/onlinesabong";
+$baseUrl = "http://192.168.1.2/onlinesabong";
 
 date_default_timezone_set("Asia/Manila");
 
