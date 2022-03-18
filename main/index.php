@@ -20,6 +20,10 @@ include_once "../system/backend/config.php";
                 header("location:operator/dashboard");
                 exit();
                 break;
+            case "video-operator":
+                header("location:video-operator");
+                exit();
+                break;
             case "user":
                 header("location:user/electronic-betting");
                 exit();

@@ -6,7 +6,7 @@
             global $conn;
             $data = array();
             $table = "account";
-            $sql = "SELECT * FROM `$table` ORDER by idx DESC";
+            $sql = "SELECT * FROM `$table` WHERE access='admin' || access='teller' || access='operator' || access='video-operator' ORDER by idx DESC";
             if($result=mysqli_query($conn,$sql)){
                 if(mysqli_num_rows($result) > 0){
                     while($row=mysqli_fetch_array($result)){

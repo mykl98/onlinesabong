@@ -150,10 +150,9 @@ function renderUserDetail(data){
 }
 
 function process(){
-    var amount = $("#qr-amount").val();
+    var amount = $("#qr-amount").val().replace(/₱/g,"").replace(/,/g,"");
     var type = $("#qr-type").val();
     var error = "";
-    //alert(type);
     if(amount == "" || amount == undefined){
         error = "*Amount field should not be empty!";
     }else if(type == "" || type == undefined){

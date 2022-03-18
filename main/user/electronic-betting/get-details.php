@@ -93,6 +93,24 @@
             return $amount;
         }
 
+        function getFightStatistics(){
+            global $conn;
+            $data = array();
+            $table = "entry";
+            $sql = "SELECT * FROM `$table`";
+            if($result=mysqli_query($conn,$sql)){
+                if(mysqli_num_rows($result) > 0){
+                    while($row=mysqli_fetch_array($result)){
+                        $value = new \StdClass();
+                        $value -> number = $row["number"];
+                        $value -> winner = $row["winner"];
+                        array_push($data,$value);
+                    }
+                }
+            }
+            return $data;
+        }
+
         function getDetails($userIdx){
             global $fightNumber,$fightIdx,$fightStatus,$fightDescription;
             getFight();
@@ -103,6 +121,7 @@
             $value -> fightidx = $fightIdx;
             $value -> fightstatus = $fightStatus;
             $value -> fightdescription = $fightDescription;
+            $value -> statistics = getFightStatistics();
             $value -> meronmainbet = getMeronTotalBet($fightIdx);
             $value -> walamainbet = getWalaTotalBet($fightIdx);
             $value -> meronbet = getMeronBet($userIdx,$fightIdx);

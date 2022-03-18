@@ -1,11 +1,13 @@
 <?php
     if($_POST){
-        include_once "../system/backend/config.php";
+        include_once "../../system/backend/config.php";
 
-        $fightNumber = "0";
+        $fightNumber = "";
         $fightIdx = "";
         $fightStatus = "";
         $fightDescription = "";
+        $walaDescription = "";
+        $meronDescription = "";
 
         function getMeronTotalBet($fightIdx){
             global $conn;
@@ -38,9 +40,9 @@
         }
 
         function getFight(){
-            global $conn,$fightNumber,$fightIdx,$fightStatus,$fightDescription;
+            global $conn,$fightNumber,$fightIdx,$fightStatus,$fightDescription,$meronDescription,$walaDescription;
             $table = "entry";
-            $sql = "SELECT idx,number,description,status FROM `$table` WHERE status='open'||status='lastcall'||status='locked'||status='meronlocked'||status='walalocked'";
+            $sql = "SELECT * FROM `$table` WHERE status='open'||status='lastcall'||status='locked'||status='meronlocked'||status='walalocked'";
             if($result=mysqli_query($conn,$sql)){
                 if(mysqli_num_rows($result) > 0){
                     $row = mysqli_fetch_array($result);
@@ -48,6 +50,8 @@
                     $fightIdx = $row["idx"];
                     $fightStatus = $row["status"];
                     $fightDescription = $row["description"];
+                    $meronDescription = $row["meron"];
+                    $walaDescription = $row["wala"];
                 }
             }
         }
@@ -95,7 +99,7 @@
         }
 
         function getDetails(){
-            global $fightNumber,$fightIdx,$fightStatus,$fightDescription;
+            global $fightNumber,$fightIdx,$fightStatus,$fightDescription,$meronDescription,$walaDescription;
             getFight();
             $data = array();
             $value = new \StdClass();
@@ -103,6 +107,8 @@
             $value -> fightidx = $fightIdx;
             $value -> fightstatus = $fightStatus;
             $value -> fightdescription = $fightDescription;
+            $value -> merondescription = $meronDescription;
+            $value -> waladescription = $walaDescription;
             $value -> meronmainbet = getMeronTotalBet($fightIdx);
             $value -> walamainbet = getWalaTotalBet($fightIdx);
             array_push($data,$value);
@@ -111,7 +117,11 @@
         }
 
         session_start();
-        echo getDetails();
+        if($_SESSION["isLoggedIn"] == "true" && $_SESSION["access"] == "video-operator"){
+            echo getDetails();
+        }else{
+            echo "Access Denied!";
+        }
     }else{
         echo "Access Denied!";
     }

@@ -94,6 +94,7 @@ function renderEntryList(data){
                                 <th>Meron</th>\
                                 <th>Wala</th>\
                                 <th>Description</th>\
+                                <th>Winner</th>\
                                 <th>Status</th>\
                                 <th style="max-width:50px;min-width:50px;">Action</th>\
                             </tr>\
@@ -101,6 +102,14 @@ function renderEntryList(data){
                         <tbody>';
     lists.forEach(function(list){
         var status = list.status;
+        var winner = list.winner;
+        if(winner == "meron"){
+            winner = '<span class="badge badge-success">MERON</span>';
+        }else if(winner == "draw"){
+            winner = '<span class="badge badge-info">DRAW</span>';
+        }else if(winner == "wala"){
+            winner = '<span class="badge badge-danger">WALA</span>';
+        }
         var button = "";
         if(status == "waiting"){
             status = '<span class="badge badge-info">Waiting</span>';
@@ -182,6 +191,7 @@ function renderEntryList(data){
                         <td>'+list.meron+'</td>\
                         <td>'+list.wala+'</td>\
                         <td>'+list.description+'</td>\
+                        <td>'+winner+'</td>\
                         <td>'+status+'</td>\
                         <td>'+button+'</td>\
                    </tr>';

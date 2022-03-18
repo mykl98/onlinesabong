@@ -96,7 +96,6 @@ function getDetails(){
 }
 
 function renderDetails(data){
-    //alert(data);
     var lists = JSON.parse(data);
     lists.forEach(function(list){
         var wallet = list.wallet;
@@ -117,14 +116,24 @@ function renderDetails(data){
         var walaDeduction = walaMainBet * 0.07;
         var meronRemaining = meronMainBet - meronDeduction;
         var walaRemaining = walaMainBet - walaDeduction;
-        var meronWin = walaRemaining * (meronBet/meronMainBet);
-        var walaWin = meronRemaining * (walaBet/walaMainBet);
-        var meronPayout = meronBet*1 + meronWin;
-        var walaPayout = walaBet*1 + walaWin;
-        var meronPer100 = walaRemaining * (100 / meronMainBet);
-        var walaPer100 = meronRemaining * (100 / walaMainBet);
-        meronPer100 = meronPer100 + 100;
-        walaPer100 = walaPer100 + 100;
+        var meronPayout = 0;
+        var walaPayout = 0;
+        var meronPer100 = 0;
+        var walaPer100 = 0;
+        if(walaRemaining != 0 && meronRemaining != 0){
+            meronPer100 = walaRemaining * (100 / meronMainBet);
+            walaPer100 = meronRemaining * (100 / walaMainBet);
+            meronPer100 = meronPer100 + 100;
+            walaPer100 = walaPer100 + 100;
+            if(meronBet != 0){
+                var meronWin = walaRemaining * (meronBet/meronMainBet);
+                meronPayout = meronBet*1 + meronWin;
+            }
+            if(walaBet != 0){
+                var walaWin = meronRemaining * (walaBet/walaMainBet);
+                walaPayout = walaBet*1 + walaWin;
+            }
+        }
         $("#meron-main-bet").text(formatToCurrency(meronMainBet));
         $("#wala-main-bet").text(formatToCurrency(walaMainBet));
         $("#meron-bet").text(formatToCurrency(meronBet));
@@ -157,6 +166,21 @@ function renderDetails(data){
             }
             $("#fight-status-container").html(status);
         }
+        var statistics = list.statistics;
+        var markUp = "";
+        statistics.forEach(function(stat){
+            var winner = stat.winner;
+            if(winner == "meron"){
+                markUp += '<span class="bg-success rounded p-2 mr-2" style="font-size:18px;">'+stat.number+'</span>';
+            }
+            if(winner == "wala"){
+                markUp += '<span class="bg-danger rounded p-2 mr-2" style="font-size:18px;">'+stat.number+'</span>';
+            }
+            if(winner == "draw"){
+                markUp += '<span class="bg-info rounded p-2 mr-2" style="font-size:18px;">'+stat.number+'</span>';
+            }
+        })
+        $("#statistics-container").html(markUp);
     })
 }
 
@@ -205,7 +229,7 @@ function addBetWala(){
 }
 
 function confirmBet(){
-    var betAmount = $('#bet-amount').val();
+    var betAmount = $("#bet-amount").val().replace(/₱/g,"").replace(/,/g,"");
     //alert(betAmount);
     var error = "";
     if(betAmount == "" || betAmount == undefined){

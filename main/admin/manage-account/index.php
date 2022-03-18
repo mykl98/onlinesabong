@@ -141,6 +141,7 @@
                         <select class="form-control" id="account-access">
                             <option value="teller">Teller</option>
                             <option value="operator">Operator</option>
+                            <option value="video-operator">Video Operator</option>
                         </select>
                     </div>
                 </form>

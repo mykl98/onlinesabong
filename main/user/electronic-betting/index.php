@@ -121,6 +121,12 @@
                             <p class="pl-2 text-info" id="wala-per100">0</p>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col mb-4">
+                            <p>Statistics</p>
+                            <div id="statistics-container"></div>
+                        </div>
+                    </div>
                 </div><!-- /.container-fluid -->
             </section><!-- /.content -->
         </div><!-- /.content-wrapper -->
@@ -130,7 +136,7 @@
     <!-- ./wrapper -->
     
     <!-- Modals -->
-<div class="modal fade" id="add-bet-modal">
+<div class="modal fade" id="add-bet-modal" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

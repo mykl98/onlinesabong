@@ -39,8 +39,19 @@
                             return $update;
                         }
                     }
-                    return "true";
                 }
+                return "true";
+            }else{
+                return "System Error!";
+            }
+        }
+
+        function setWinner($idx,$winner){
+            global $conn;
+            $table = "entry";
+            $sql = "UPDATE `$table` SET winner='$winner' WHERE idx='$idx'";
+            if(mysqli_query($conn,$sql)){
+                return "true";
             }else{
                 return "System Error!";
             }
@@ -58,7 +69,12 @@
                 systemLog("Declare draw for the entry with index number ".$idx,$_SESSION["loginidx"]);
                 $release = releasePayment($idx);
                 if($release == "true"){
-                    return "true*_*";
+                    $winner = setWinner($idx,"draw");
+                    if($winner == "true"){
+                        return "true*_*";
+                    }else{
+                        return $winner;
+                    }
                 }else{
                     return $release;
                 }
